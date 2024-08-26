@@ -1,0 +1,108 @@
+/* Container for the form */
+.form-container {
+    margin: 10px auto; /* Auto margins for horizontal centering */
+    max-width: 100%;
+    width: 900px; /* Default width */
+}
+
+.form-label {
+    margin-top: 15px;
+}
+
+.btn-dark {
+    background-color: #088e54;
+    --bs-btn-hover-bg: #077947;
+    --bs-btn-hover-border-color: #067243;
+}
+
+/* Responsive adjustments for form elements */
+@media (max-width: 1200px) {
+    .form-container {
+        width: 80%; /* Adjust width for tablets and smaller desktops */
+    }
+}
+
+@media (max-width: 768px) {
+    .form-container {
+        width: 90%; /* Adjust width for smaller tablets and large phones */
+    }
+
+    .form-label {
+        margin-top: 10px;
+    }
+
+    .form-control {
+        width: 100%;
+    }
+
+    .g-gs {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-group {
+        width: 100%;
+    }
+
+    .btn-large {
+        justify-content: center;
+        width: 80%;
+        margin-top: 10px;
+    }
+
+    .card-title-group {
+        flex-direction: column;
+    }
+
+    .card-amount {
+        margin-top: 10px;
+    }
+
+    .list-group-item {
+        width: 100%;
+    }
+
+    .image-preview {
+        width: 100%;
+        height: auto;
+    }
+
+    .alert-icon {
+        width: 100%;
+    }
+}
+
+@media (max-width: 360px) {
+    .form-container {
+        width: 100%; /* Full width for very small screens */
+    }
+
+    .form-label {
+        margin-top: 5px;
+    }
+
+    .btn-large {
+        width: 100%;
+        margin-top: 5px;
+    }
+}
+
+
+
+
+.btn-large {
+    /* Default size for web (larger screens) */
+    font-size: 1.25rem; /* Adjust font size */
+    padding: 0.75rem 1.5rem; /* Adjust padding */
+    width: auto; /* Default to auto width */
+    box-sizing: border-box;
+  }
+  
+  @media (max-width: 576px) {
+    .btn-large {
+      /* Adjustments for mobile size */
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      width: 35%; /* Full width on mobile */
+    }
+  }

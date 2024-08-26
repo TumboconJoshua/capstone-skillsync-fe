@@ -1,0 +1,12 @@
+
+.responsive-chart-container {
+  width: 100%;
+  
+}
+
+@media (max-width: 768px) {
+  .responsive-chart-container {
+    width: 800px; 
+    margin-right: 10px;
+  }
+}
