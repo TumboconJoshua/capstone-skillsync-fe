@@ -200,7 +200,7 @@ const categoryMap = categories.reduce((map, category) => {
 
                   <br />
 
-                  <a href={`https://skillsync.pw/api/${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
+                  <a href={`http://localhost:8000/api/${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
 
                 </>
               )}

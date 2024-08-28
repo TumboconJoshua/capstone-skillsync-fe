@@ -90,7 +90,7 @@ const Job = ({ ...props }) => {
     title: "",
     description: "",
     location: "",
-    salary: "",
+    salary: null,
     slot: "",
     due_date: "",
     requirements: "",
@@ -130,7 +130,7 @@ const Job = ({ ...props }) => {
       title: "",
       description: "",
       location: "",
-      salary: "",
+      salary: null,
       slot: "",
       due_date: "",
       requirements: "",
@@ -307,7 +307,7 @@ const Job = ({ ...props }) => {
     title: '',
     description: '',
     location: '',
-    salary: '',
+    salary: null,
     slot: '',
     due_date: '',
     requirements: '',
@@ -357,7 +357,7 @@ const Job = ({ ...props }) => {
         console.log(response.data);
 
         setResume(response.data);
-        setImagePreview(`https://skillsync.pw/`+response.data.profile);
+        setImagePreview(`http://localhost:8000/`+response.data.profile);
 
         
       })
@@ -513,7 +513,8 @@ const Job = ({ ...props }) => {
                       <Icon name={"building"}></Icon> {job.company}
                     </CardSubtitle>
                     <CardSubtitle tag="h6" className="mb-2 ff-base">
-                      <Icon name={"money"}></Icon> {job.salary}
+                      <Icon name={"money"} > Php</Icon> {job.salary}
+                      
                     </CardSubtitle>
                     <CardSubtitle tag="h6" className="mb-2 ff-base">
                       <Icon name={"location"}></Icon> {job.location}
@@ -761,19 +762,22 @@ const Job = ({ ...props }) => {
       </Modal>
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader
-          toggle={toggle}
-          close={
-            <button className="close" onClick={toggle}>
-              <Icon name="cross" />
-            </button>
-          }
-        >
-          Create Job
-        </ModalHeader>
+                toggle={toggle}
+                close={
+                  <button className="close" onClick={toggle} style={{marginLeft: '72%'}}>
+                    <Icon name="cross" />
+                  </button>
+                }
+        >Create Job</ModalHeader>
+
         <ModalBody>
           {/* FORM HERE */}
           <form>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '6%' }}
+              >(Required)</span>
               <label>Title</label>
               <input
                 type="text"
@@ -781,18 +785,30 @@ const Job = ({ ...props }) => {
                 value={formData.title}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. IT Specialist"
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '16%' }}
+              >(Required)</span>
               <label>Description</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. We are seeking a skilled Marketing Manager to lead our marketing efforts 
+                and drive brand growth. In this role, you will develop and implement marketing strategies, 
+                manage campaigns, and analyze performance to ensure we meet our business goals."
               ></textarea>
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '12%' }}
+              >(Required)</span>
               <label>Location</label>
               <input
                 type="text"
@@ -800,19 +816,29 @@ const Job = ({ ...props }) => {
                 value={formData.location}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. Olongapo City, Zambales"
               />
             </div>
             <div className="form-group">
-              <label>Salary</label>
+              <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}
+              >(Optional)</span>
+              <label>Salary Range</label>
               <input
-                type="number"
+                type="text"
                 name="salary"
-                value={formData.salary}
+                value={formData.salary || ''}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. 30,000 - 50,000 "
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '6%' }}
+              >(Required)</span>
               <label>Slot</label>
               <input
                 type="number"
@@ -820,9 +846,14 @@ const Job = ({ ...props }) => {
                 value={formData.slot}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. 10"
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '19%' }}
+              >(Required)</span>
               <label>Requirements</label>
               <input
                 type="text"
@@ -830,9 +861,14 @@ const Job = ({ ...props }) => {
                 value={formData.requirements}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. Professionalism and strong work ethic."
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '13%' }}
+              >(Required)</span>
               <label htmlFor="dueDate">Due Date</label>
               <input
                 type="date"
@@ -844,6 +880,10 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '20%' }}
+              >(Required)</span>
               <label>Facebook Link</label>
               <input
                 type="text"
@@ -851,6 +891,7 @@ const Job = ({ ...props }) => {
                 value={formData.facebook}
                 onChange={handleInputChange}
                 className="form-control"
+                placeholder="ex. https://www.facebook.com/"
               />
             </div>
             {/* <div className="form-group">
@@ -864,6 +905,10 @@ const Job = ({ ...props }) => {
               />
             </div> */}
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}
+              >(Required)</span>
               <label>
                 Job Category
               </label>
@@ -917,6 +962,11 @@ const Job = ({ ...props }) => {
           {/* Edit form goes here */}
           <form>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '7%' }}>
+                (Required)
+              </span>
               <label>Title</label>
               <input
                 type="text"
@@ -924,9 +974,15 @@ const Job = ({ ...props }) => {
                 value={editFormData.title}
                 onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
                 className="form-control"
+                
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '16%' }}>
+                (Required)
+              </span>
               <label>Description</label>
               <textarea
                 name="description"
@@ -945,6 +1001,11 @@ const Job = ({ ...props }) => {
                             ></textarea>
                         </div> */}
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '12%' }}>
+                (Required)
+              </span>
               <label>Location</label>
               <input
                 type="text"
@@ -955,9 +1016,14 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
-              <label>Salary</label>
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}>
+                (Optional)
+              </span>
+              <label>Salary Range</label>
               <input
-                type="number"
+                type="text"
                 name="salary"
                 value={editFormData.salary}
                 onChange={(e) => setEditFormData({ ...editFormData, salary: e.target.value })}
@@ -965,6 +1031,11 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '20%' }}>
+                (Required)
+              </span>
               <label>Facebook Link</label>
               <input
                 type="text"
@@ -975,6 +1046,11 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '6%' }}>
+                (Required)
+              </span>
               <label>Slot</label>
               <input
                 type="number"
@@ -985,6 +1061,11 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '13%' }}>
+                (Required)
+              </span>
               <label>Due date</label>
               <input
                 type="date"
@@ -995,6 +1076,11 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '19%' }}>
+                (Required)
+              </span>
               <label>Requirements</label>
               <input
                 type="text"
@@ -1005,9 +1091,12 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
-              <label>
-                Job Category
-              </label>
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}>
+                (Required)
+              </span>
+              <label>Job Category</label>
               <select
                 id="job_category"
                 className="form-control"

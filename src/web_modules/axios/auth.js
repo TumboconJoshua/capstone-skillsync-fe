@@ -28,6 +28,6 @@ const logout = async () => {
   }
 };
 
-const BASE_URL = 'https://skillsync.pw/api';
+const BASE_URL = 'http://localhost:8000/api';
 
 export { login, logout, BASE_URL };

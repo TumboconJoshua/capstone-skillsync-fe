@@ -20,7 +20,7 @@ const User = () => {
         // console.log(useImage.profile_picture);+
         if (useImage.profile_picture) {
           
-          setProfile(`https://skillsync.pw/`+useImage.profile_picture);
+          setProfile(`http://localhost:8000/`+useImage.profile_picture);
         }
 
       console.log(profile);

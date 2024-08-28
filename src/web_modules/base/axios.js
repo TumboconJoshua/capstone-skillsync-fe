@@ -59,7 +59,7 @@ class ApiService {
 
             const response = await axios({
                 method: method,
-                url: `https://skillsync.pw/`+ endpoint,
+                url: `http://localhost:8000/`+ endpoint,
                 headers: headers,
                 data: data,
             })
