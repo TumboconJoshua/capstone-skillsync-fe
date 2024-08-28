@@ -321,7 +321,7 @@ const TransListCrypto = () => {
                     <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
                     </label>
                     <input
-                      type="text"
+                      type="number"
                       className="form-control"
                       pattern="\d{11}"
                       title="Contact number must be 11 digits"
@@ -497,37 +497,59 @@ const TransListCrypto = () => {
                     </div>
                   </Col>
                   <Col md="6">
-                    <div className="form-group">
-                      <label className="form-label">Government ID:
-                      <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
-                      </label>
-                      <div className="d-flex">
-                        <select
-                          id="gov-number-select"
-                          onChange={handleSelectChange}
-                          className="form-control me-2"
-                          value={selectedOption}
-                        >
-                          <option value="">Select your Government ID:</option>
-                          <option value="sss">SSS Number</option>
-                          <option value="pagibig">Pag-IBIG Number</option>
-                          <option value="philhealth">PhilHealth Number</option>
-                          <option value="tin">TIN Number</option>
-                        </select>
-                        {/* ${selectedOption.replace(/([A-Z])/g, ' $1').trim()} */}
-                        {selectedOption && (
-                          <input
-                            type="text"
-                            id={selectedOption}
-                            placeholder={`Enter your ID number`}
-                            {...register(selectedOption, { required: true })}
-                            className="form-control"
-                          />
-                        )}
+                      <div className="form-group">
+                        <label className="form-label">Pag-Ibig No.
+                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                        </label>
+                        <input type="number"
+                          id="pagibig"
+                          placeholder="Enter your Pag-Ibig no."
+                          {...register('pagibig', { required: false })}
+                          className="form-control" />
+                        {errors.pagibig && <p className="invalid">This field is required</p>}
                       </div>
-                      {errors[selectedOption] && <p className="invalid mt-2">This field is required</p>}
-                    </div>
-                  </Col>     
+                    </Col>
+                </Row>
+                <Row>
+                <Col md="4">
+                      <div className="form-group">
+                        <label className="form-label">SSS No.
+                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                        </label>
+                        <input type="number"
+                          id="sss"
+                          placeholder="Enter your SSS no."
+                          {...register('sss', { required: false })}
+                          className="form-control" />
+                        {errors.sss && <p className="invalid">This field is required</p>}
+                      </div>
+                    </Col>
+                    <Col md="4">
+                      <div className="form-group">
+                        <label className="form-label">Philhealth No.
+                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                        </label>
+                        <input type="number"
+                          id="philhealth"
+                          placeholder="Enter your Philhealth no."
+                          {...register('philhealth', { required: false })}
+                          className="form-control" />
+                        {errors.philhealth && <p className="invalid">This field is required</p>}
+                      </div>
+                    </Col>
+                    <Col md="4">
+                      <div className="form-group">
+                        <label className="form-label">Tin No.
+                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                        </label>
+                        <input type="number"
+                          id="tin"
+                          placeholder="Enter your Tin no."
+                          {...register('tin', { required: false })}
+                          className="form-control" />
+                        {errors.tin && <p className="invalid">This field is required</p>}
+                      </div>
+                    </Col>
                 </Row>
 
 
@@ -703,7 +725,7 @@ const TransListCrypto = () => {
                         <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
                         </label>
                         <input
-                          type="text"
+                          type="number"
                           id="zipcode"
                           {...register('zipcode', { required: true })}
                           placeholder="Enter your zipcode"

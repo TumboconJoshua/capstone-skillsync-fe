@@ -617,16 +617,19 @@ const Job = ({ ...props }) => {
                   
                   <p><strong>Full Name: </strong>{selectedResume.fullname }&nbsp;&nbsp;&nbsp;
                   <strong>Age: </strong>{selectedResume.age}&nbsp;&nbsp;&nbsp;
-                  <strong>Sex: </strong>{selectedResume.sex}&nbsp;&nbsp;&nbsp;
-                  <strong>Contact No: </strong>{selectedResume.contact}</p>
-                  
-                  <p><strong>Email: </strong>{selectedResume.email}&nbsp;&nbsp;&nbsp;
+                  <strong>Sex: </strong>{selectedResume.sex}</p>
+                  <p><strong>Contact No: </strong>{selectedResume.contact}&nbsp;&nbsp;&nbsp;
+                  <strong>Email: </strong>{selectedResume.email}</p><p>
                   <strong>Birthdate: </strong>{selectedResume.birthdate}&nbsp;&nbsp;&nbsp;
                   <strong>Citizenship: </strong>{selectedResume.citizenship}</p>
-                  
                   <p><strong>Birth Place: </strong>{selectedResume.birth_place}&nbsp;&nbsp;&nbsp;
                   <strong>Civil Status: </strong>{selectedResume.civil_status}</p>
-                  <br></br>
+                  <p><strong>SSS No: </strong>{selectedResume.sss}&nbsp;&nbsp;&nbsp;
+                  <strong>Pag-Ibig No: </strong>{selectedResume.pagibig}&nbsp;&nbsp;&nbsp;
+                  <strong>Philhealth No: </strong>{selectedResume.philhealth}&nbsp;&nbsp;&nbsp;
+                  <strong>Tin No: </strong>{selectedResume.tin}
+                  
+                  </p>
 
                   
                   <h6>Address Details</h6>
