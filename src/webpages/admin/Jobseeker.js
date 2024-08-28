@@ -99,10 +99,11 @@ const categoryMap = categories.reduce((map, category) => {
             <table className="table table-bordered">
               <thead>
                 <tr>
-                  <th>User ID</th>
+                   {/*<th>User ID</th>*/}
                   <th>First Name</th>
                   <th>Last Name</th>
                   <th>Job Category</th>
+                  <th>Address</th>
                   
                   {/* <th>Action</th> */}
                   {/* Add more columns if needed */}
@@ -111,10 +112,11 @@ const categoryMap = categories.reduce((map, category) => {
               <tbody>
                 {jobSeekers.map(jobSeeker => (
                   <tr key={jobSeeker.id}>
-                    <td>{jobSeeker.id}</td>
+                    {/*<td>{jobSeeker.id}</td>*/}
                     <td>{jobSeeker.first_name}</td>
                     <td>{jobSeeker.last_name}</td>
                     <td>{categoryMap[jobSeeker.category_id] || 'Unknown Category'}</td>
+                    <td>{jobSeeker.street} {jobSeeker.address}, {jobSeeker.province} {jobSeeker.zipcode} </td>
                     
                     {/* <td>
                       <Button color="primary" onClick={() => openModal(jobSeeker)}>View</Button>

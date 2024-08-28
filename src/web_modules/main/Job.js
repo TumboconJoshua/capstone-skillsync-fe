@@ -600,7 +600,7 @@ const Job = ({ ...props }) => {
       </Content>
       {/* View Modal */}
       <Modal isOpen={viewResumeModal} toggle={() => setViewResume(false)} size="l">
-        <ModalHeader toggle={() => setViewResume(false)}>Employee details</ModalHeader>
+        <ModalHeader toggle={() => setViewResume(false)}>Employee Details</ModalHeader>
           <ModalBody>
             {selectedResume && (
               <>
@@ -615,14 +615,21 @@ const Job = ({ ...props }) => {
                     </div>
                   <br></br>
                   
-                  <p><strong>Full Name: </strong>{selectedResume.fullname }</p>
-                  <p><strong>Sex: </strong>{selectedResume.sex}</p>
-                  <p><strong>Age: </strong>{selectedResume.age}</p>
-                  <p><strong>Email: </strong>{selectedResume.email}</p>
-                  <p><strong>Birthdate: </strong>{selectedResume.birthdate}</p>
-                  <p><strong>Contact no: </strong>{selectedResume.contact}</p>
+                  <p><strong>Full Name: </strong>{selectedResume.fullname }&nbsp;&nbsp;&nbsp;
+                  <strong>Age: </strong>{selectedResume.age}&nbsp;&nbsp;&nbsp;
+                  <strong>Sex: </strong>{selectedResume.sex}&nbsp;&nbsp;&nbsp;
+                  <strong>Contact No: </strong>{selectedResume.contact}</p>
                   
-                  <h5>Address Details</h5>
+                  <p><strong>Email: </strong>{selectedResume.email}&nbsp;&nbsp;&nbsp;
+                  <strong>Birthdate: </strong>{selectedResume.birthdate}&nbsp;&nbsp;&nbsp;
+                  <strong>Citizenship: </strong>{selectedResume.citizenship}</p>
+                  
+                  <p><strong>Birth Place: </strong>{selectedResume.birth_place}&nbsp;&nbsp;&nbsp;
+                  <strong>Civil Status: </strong>{selectedResume.civil_status}</p>
+                  <br></br>
+
+                  
+                  <h6>Address Details</h6>
                   <p><strong>Address #:</strong> { selectedResume.address}</p>
                   <p><strong>Street:</strong> { selectedResume.street}</p>
                   <p><strong>Barangay:</strong> { selectedResume.barangay}</p>
