@@ -105,6 +105,7 @@ const Job = ({ ...props }) => {
         location: "",
         salary: "",
         slot: "",
+        soft_sskill: "",
         due_date: "",
         requirements: "",
         facebook: "",
@@ -324,7 +325,7 @@ if (localStorage.getItem("role") != "Employer") {
             due_date: row.due_date,
             requirements: row.requirements,
             facebook: row.facebook,
-            slot: row.slot,
+            soft_sskill: row.soft_sskill,
             job_category: row.category_id,
         });
 
@@ -530,7 +531,7 @@ if (localStorage.getItem("role") != "Employer") {
       </Content>
         {/* View Modal */}
     <Modal isOpen={viewModal} toggle={() => setViewModal(false)} size="xl" >
-    <ModalHeader toggle={() => setViewModal(false)}>Job Posting </ModalHeader>
+    <ModalHeader toggle={() => setViewModal(false)}>Job Postings </ModalHeader>
     <ModalBody >
         {/* Display job details here */}
         {selectedJob && (
@@ -542,10 +543,12 @@ if (localStorage.getItem("role") != "Employer") {
                 <p><strong>Descriptions:</strong> {selectedJob.description}</p>
                 <p><strong>Slot:</strong> {selectedJob.slot}</p>
                 <p><strong>Due Date:</strong> {selectedJob.due_date}</p>
+                <p><strong>Soft Skill:</strong> {selectedJob.soft_sskill}</p>
+               
                 <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
 
                    <p style={{ marginRight: '15px' }}><Icon name={"user"} style={{ marginRight: '5px' }}></Icon>{selectedJob.fullname} ({selectedJob.position})</p>
-                   <p style={{ marginRight: '15px' }}><Icon name={"money"} style={{ marginRight: '5px' }}></Icon>{selectedJob.salary}</p>
+                   <p style={{ marginRight: '15px' }}><Icon name={"money"} style={{ marginRight: '5px' }}></Icon> Php {selectedJob.salary}</p>
                    <p style={{ marginRight: '15px' }}><Icon name={"location"} style={{ marginRight: '5px' }}></Icon>{selectedJob.location}</p>
                    <p style={{ marginRight: '15px' }}><Icon name={"telegram"} style={{ marginRight: '5px' }}></Icon>{selectedJob.contact_number}</p>
                    <p style={{ marginRight: '15px' }}><Icon name={"mail"} style={{ marginRight: '5px' }}></Icon>{selectedJob.email}</p>

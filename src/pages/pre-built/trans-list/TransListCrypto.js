@@ -737,154 +737,56 @@ const TransListCrypto = () => {
                   </Row>
                   
                   <Row>
-                    <Col md="6">
+                  <Col md="6">
                       <div className="form-group">
-                        <label className="form-label d-flex align-items-center">
+                        <label className="form-label">
                           Educational Attainment
-                          <Button
-                            type="button"
-                            color="secondary"
-                            className="ms-2 d-none d-md-block" // Show only on medium and larger screens
-                            onClick={toggleInputMethod}
-                          >
-                            {useCustomInput ? 'Dropdown' : 'Input'}
-                          </Button>
-                          <Button
-                            type="button"
-                            color="secondary"
-                            className="ms-2 d-block d-md-none" // Show only on small screens
-                            onClick={toggleInputMethod}
-                          >
-                            {useCustomInput ? 'Drop' : 'Input'}
-                          </Button>
+                          <span className="text-muted" style={{ fontSize: '10px' }}> (Optional)</span>
                         </label>
-                        {education.map((exp, index) => (
-                          <div key={index} className="mb-2 d-flex align-items-center">
-                            <input type="text" className="form-control mt-2" value={exp} readOnly />
-                            <Button
-                              type="button"
-                              color="danger"
-                              className="ms-2"
-                              onClick={() => handleDeleteEducation(index)}
-                              style={{ marginTop: '11px' }}
-                            >
-                              x
-                            </Button>
-                          </div>
-                        ))}
-                        <div className="d-flex align-items-center mt-2">
-                          <div className="flex-grow-1 d-flex align-items-center">
-                            {useCustomInput ? (
-                              <input
-                                type="text"
-                                className="form-control"
-                                placeholder="Enter Educational Attainment"
-                                value={customEducation}
-                                onChange={handleChangeCustomEducation}
-                              />
-                            ) : (
-                              <select
-                                className="form-control"
-                                value={newEducation}
-                                onChange={handleChangeeducation}
-                              >
-                                <option value="">Select Educational Attainment</option>
-                                {educationOptions.map((option, index) => (
-                                  <option key={index} value={option}>
-                                    {option}
-                                  </option>
-                                ))}
-                              </select>
-                            )}
-                          </div>
-                          <Button
-                            type="button"
-                            color="primary"
-                            className="ms-2 d-none d-md-block" // Show only on medium and larger screens
-                            onClick={handleAddEducation}
-                          >
-                            Add
-                          </Button>
-                          <Button
-                            type="button"
-                            color="primary"
-                            className="ms-2 d-block d-md-none" // Show only on small screens
-                            onClick={handleAddEducation}
-                          >
-                            +
-                          </Button>
-                        </div>
-                      </div>
+                        <select
+                          id="educational_attainment"
+                          {...register('educational_attainment', { required: true })}
+                          className="form-control"
+                        >
+                          <option value="" disabled selected>
+                            Select your educational attainment
+                          </option>
+                          <option value="College Graduate">College Graduate</option>
+                          <option value="College Level">College Level</option>
+                          <option value="High School Graduate">High School Graduate</option>
+                          <option value="High School Level">High School Level</option>
+                        </select>
+                        {errors.educational_attainment && <p className="invalid">This field is required</p>}
+                      </div>  
                     </Col>
-
-                    
-
-
-                    <Col md="6">
+                    <Col md="3">
                       <div className="form-group">
-                        <label className="form-label" style={{marginTop: '20px'}}>Experience
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                        <label className="form-label">Experience
+                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
                         </label>
-                        {experiences.map((exp, index) => (
-                          <div key={index} className="mb-2 d-flex align-items-center">
-                            <input type="text" className="form-control mt-2" value={exp.experience} readOnly />
-                            <input
-                              type="number"
-                              className="form-control mt-2 ms-2"
-                              value={exp.years}
-                              readOnly
-                            />
-                            <Button
-                              type="button"
-                              color="danger"
-                              className="ms-2"
-                              onClick={() => handleDeleteExperience(index)}
-                              style={{ marginTop: '11px' }}
-                            >
-                              x
-                            </Button>
-                          </div>
-                        ))}
-                        <div className="d-flex align-items-center mt-2">
-                          <input
-                            type="text"
-                            className="form-control"
-                            placeholder="Add Experience"
-                            value={newExperience}
-                            onChange={handleExperienceChange}
-                          />
-                          <input
-                            type="number"
-                            className="form-control ms-2"
-                            placeholder="Years"
-                            value={newYears}
-                            onChange={handleYearsChange}
-                            max="99" // Limits the maximum value to 99
-                            min="0"  // Limits the minimum value to 0
-                            step="1" // Ensures only integer values are allowed
-                          />
-                          <Button
-                            type="button"
-                            color="primary"
-                            onClick={handleAddExperience}
-                            className="ms-2 d-none d-md-block"
-                          >
-                            Add
-                          </Button>
-                          <Button
-                            type="button"
-                            color="primary"
-                            onClick={handleAddExperience}
-                            className="ms-2 d-block d-md-none"
-                          >
-                            +
-                          </Button>
-                        </div>
+                        <input
+                          type="text"
+                          id="experience"
+                          {...register('experience', { required: true })}
+                          placeholder="Enter your experience"
+                          className="form-control" />
+                        {errors.experience && <p className="invalid">This field is required</p>}
                       </div>
                     </Col>
-
-
-
+                    <Col md="3">
+                      <div className="form-group">
+                        <label className="form-label">Experience Years
+                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                        </label>
+                        <input
+                          type="text"
+                          id="experience_years"
+                          {...register('experience_years', { required: true })}
+                          placeholder="ex. 2021 - 2022"
+                          className="form-control" />
+                        {errors.experience_years && <p className="invalid">This field is required</p>}
+                      </div>
+                    </Col>
                   </Row>
                   <br></br><br></br>
                   <Row className="mt-3">

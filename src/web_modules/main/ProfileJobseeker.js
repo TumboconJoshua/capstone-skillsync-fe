@@ -221,7 +221,7 @@ const ProfileJB = ({ ...props }) => {
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                 <Card className="card-bordered">
                     <CardBody className="card-inner">
-                      <h5 className="mb-3">Basic Information</h5>
+                      <h5 className="mb-3">Basic Informationss</h5>
                       <form className="is-alter" onSubmit={handleSubmitForm1(handleFormSubmit)}>
                         <Row className="mt-2">
                           <Col md="6">
@@ -476,57 +476,9 @@ const ProfileJB = ({ ...props }) => {
                           </Col>
                         </Row>
 
-                        <Row className="g-gs">
-                          <Col md="6">
-                                              {education && education.length > 0 && (
-                              <div className="form-group">
-                                <label className="form-label">Educational Attainment</label>
-                                {education.map((exp, index) => (
-                                  <div key={index} className="mb-2">
-                                    <input
-                                      type="text"
-                                      className="form-control mt-2"
-                                      defaultValue={exp}
-                                      {...registerForm2(`education[${index}]`)} // Connect with registerForm2
-                                      onChange={(e) => handleEducationChange(index, e.target.value)}
-                                    />
-                                    {/* <button type="button" className="btn btn-danger mt-2" onClick={() => deleteEducation(index)}>
-                                      Delete
-                                    </button> */}
-                                  </div>
-                                ))}
-                                {/* <button type="button" className="btn btn-primary mt-2" onClick={addEducation}>
-                                  Add Education
-                                </button> */}
-                              </div>
-                            )}
-                          </Col>
 
-                          <Col md="6">
-                            {experiences.length > 0 && (
-                              <div className="form-group">
-                                <label className="form-label">Experience</label>
-                                {experiences.map((exp, index) => (
-                                  <div key={index} className="mb-2">
-                                    <input
-                                      type="text"
-                                      className="form-control mt-2"
-                                      defaultValue={exp}
-                                      {...registerForm2(`experiences[${index}]`)} // Connect with registerForm2
-                                      onChange={(e) => handleExperienceChange(index, e.target.value)}
-                                    />
-                                    {/* <button type="button" className="btn btn-danger mt-2" onClick={() => deleteExperience(index)}>
-                                      Delete
-                                    </button> */}
-                                  </div>
-                                ))}
-                                {/* <button type="button" className="btn btn-primary mt-2" onClick={addExperience}>
-                                  Add Experience
-                                </button> */}
-                              </div>
-                            )}
-                          </Col>
-                        </Row>
+
+      
                           
                         
                         <Row className="gy-4">

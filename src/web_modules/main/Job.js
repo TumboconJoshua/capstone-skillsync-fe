@@ -96,6 +96,7 @@ const Job = ({ ...props }) => {
     requirements: "",
     facebook: "",
     available_slot: "",
+    soft_sskill: "",
     job_category: 1,
   });
 
@@ -124,6 +125,7 @@ const Job = ({ ...props }) => {
     setViewModal(false);
   }
 
+
   const toggle = () => {
     setModal(!modal)
     setFormData({
@@ -135,6 +137,7 @@ const Job = ({ ...props }) => {
       due_date: "",
       requirements: "",
       facebook: "",
+      soft_sskill: "",
       available_slot: "",
       job_category: 1,
     });
@@ -184,6 +187,12 @@ const Job = ({ ...props }) => {
     {
       name: "Facebook",
       selector: (row) => row.facebook,
+      sortable: true,
+      hide: "sm",
+    },
+    {
+      name: "Soft Skills",
+      selector: (row) => row.soft_sskill,
       sortable: true,
       hide: "sm",
     },
@@ -248,6 +257,12 @@ const Job = ({ ...props }) => {
         hide: "sm",
       },
       {
+        name: "Soft Skills",
+        selector: (row) => row.soft_sskill,
+        sortable: true,
+        hide: "sm",
+      },
+      {
         name: "Facebook",
         selector: (row) => row.facebook,
         sortable: true,
@@ -282,6 +297,10 @@ const Job = ({ ...props }) => {
     setFormData({ ...formData, [name]: value });
   };
 
+
+  
+  
+
   // Call the function
 
   const handleFormSubmit = () => {
@@ -312,7 +331,7 @@ const Job = ({ ...props }) => {
     due_date: '',
     requirements: '',
     facebook: '',
-    slot: '',
+    soft_sskill: "",
     job_category: 1,
   });
 
@@ -328,7 +347,7 @@ const Job = ({ ...props }) => {
       due_date: row.due_date,
       requirements: row.requirements,
       facebook: row.facebook,
-      slot: row.slot,
+      soft_sskill: row.soft_sskill,
       job_category: row.category_id,
     });
 
@@ -628,10 +647,8 @@ const Job = ({ ...props }) => {
                   <strong>Pag-Ibig No: </strong>{selectedResume.pagibig}&nbsp;&nbsp;&nbsp;
                   <strong>Philhealth No: </strong>{selectedResume.philhealth}&nbsp;&nbsp;&nbsp;
                   <strong>Tin No: </strong>{selectedResume.tin}
-                  
                   </p>
-
-                  
+                  <br></br>
                   <h6>Address Details</h6>
                   <p><strong>Address #:</strong> { selectedResume.address}</p>
                   <p><strong>Street:</strong> { selectedResume.street}</p>
@@ -641,43 +658,19 @@ const Job = ({ ...props }) => {
                   <p><strong>Region:</strong> { selectedResume.region}</p>
                   <p><strong>Country:</strong> { selectedResume.country}</p>
                   <p><strong>Zip code:</strong> { selectedResume.zipcode}</p>
+                  <br></br>
+                  <h6>Education and Experience</h6>
+                  <p><strong>Latest Educational Attainment:</strong> { selectedResume.educational_attainment}</p>
+                  <p><strong>Experience:</strong> { selectedResume.experience}</p>
+                  <p><strong>Experience Years:</strong> { selectedResume.experience_years}</p>
+                  <br></br>
                 </div>
+                <ModalFooter></ModalFooter>
               
                 
                 
                 
-                <ModalFooter style={{ display: "block" }}>
-                  {selectedResume && selectedResume != null && <table className="table table-bordered mt-3">
-                    <thead>
-                      <tr>
-                        <th>Educational Attainment</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {selectedResume.educational_attainment.map((ed, index) => (
-                        <tr key={`education-${index}`}>
-                            <td>{ed}</td>
-                            
-                        </tr>
-                    ))}
-                    </tbody>
-                  </table>}
-
-                  {selectedResume && selectedResume != null && <table className="table table-bordered mt-3">
-                    <thead>
-                      <tr>
-                        <th>Experience</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                    {selectedResume.experience.map((exp, index) => (
-                        <tr key={`experience-${index}`}>
-                            <td>{exp}</td>
-                        </tr>
-                    ))}
-                    </tbody>
-                  </table>}
-                </ModalFooter>
+             
                 
               </>
             )}
@@ -697,6 +690,8 @@ const Job = ({ ...props }) => {
               <p><strong>Descriptions:</strong> {selectedJob.description}</p>
               <p><strong>Slot:</strong> {selectedJob.available_slot}</p>
               <p><strong>Due Date:</strong> {selectedJob.due_date}</p>
+              <p><strong>Soft Skills:</strong> {selectedJob.soft_sskill}</p>
+
               <div style={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap' }}>
 
                 <p style={{ marginRight: '15px' }}><Icon name={"user"} style={{ marginRight: '5px' }}></Icon>{selectedJob.fullname} ({selectedJob.position})</p>
@@ -889,6 +884,27 @@ const Job = ({ ...props }) => {
                 value={formData.due_date}
               />
             </div>
+
+
+            <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '19%' }}
+              >(Optional)</span>
+              <label>Soft Skills</label>
+              <input
+                type="text"
+                name="soft_sskill"
+                id="soft_sskill"
+                value={formData.soft_sskill}
+                onChange={handleInputChange}
+                className="form-control"
+                placeholder="ex. computer literate."
+              />
+            </div>
+
+            
+
             <div className="form-group">
             <span
                 className="text-muted"
@@ -1052,6 +1068,21 @@ const Job = ({ ...props }) => {
                 name="facebook"
                 value={editFormData.facebook}
                 onChange={(e) => setEditFormData({ ...editFormData, facebook: e.target.value })}
+                className="form-control"
+              />
+            </div>
+            <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '12%' }}>
+                (Required)
+              </span>
+              <label>Soft Skill</label>
+              <input
+                type="text"
+                name="location"
+                value={editFormData.soft_sskill}
+                onChange={(e) => setEditFormData({ ...editFormData, soft_sskill: e.target.value })}
                 className="form-control"
               />
             </div>

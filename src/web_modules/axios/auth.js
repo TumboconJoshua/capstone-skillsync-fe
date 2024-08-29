@@ -4,7 +4,7 @@ const handleApiResponse = (response) => {
   console.log(response.data);
 };
 
-const API_BASE_URL = 'http://your-api-base-url/api';
+const API_BASE_URL = 'http://localhost:8000/api';
 
 const login = async (credentials) => {
   try {
