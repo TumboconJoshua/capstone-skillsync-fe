@@ -1,0 +1,35 @@
+/* General logo styles */
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  
+  /* Logo size when sidebar is compact */
+  .logo-compact {
+    width: 30px; /* Adjust as needed */
+  }
+  
+  /* Logo size when sidebar is expanded */
+  .logo-expanded {
+    width: 50px; /* Adjust as needed */
+  }
+  
+  /* Additional styles for compact sidebar */
+  .nk-sidebar.is-compact .logo-container .logo {
+    margin: 10px;
+    width: 60px;
+  }
+  
+  /* Additional styles for expanded sidebar */
+  .nk-sidebar:not(.is-compact) .logo-container .logo {
+    margin: 20px;
+    width: 180px;
+    height: 180px;
+  }
+  
+  /* Add transition for smooth resizing */
+  .logo {
+    transition: width 0.3s ease;
+  }
+  

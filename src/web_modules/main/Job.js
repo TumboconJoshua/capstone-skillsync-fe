@@ -376,7 +376,7 @@ const Job = ({ ...props }) => {
         console.log(response.data);
 
         setResume(response.data);
-        setImagePreview(`http://localhost:8000/`+response.data.profile);
+        setImagePreview(`http://127.0.0.1:8000/`+response.data.profile);
 
         
       })

@@ -131,7 +131,7 @@ const LearnPage = () => {
           <h2>Contact Us</h2>
           <p>Have any questions or need support?</p>
             <p>
-            Feel free to reach out to us at <a href="">skillsync@gmal.com</a> <a>or message our Facebook page </a><a href="">SkillSync.</a> <a>We're here to help!</a>
+            Feel free to reach out to us at <a href="https://mail.google.com/mail/u/5/#inbox?compose=CllgCJvkXVKqfdlWWqtsSvHttXwJCtskgFZJrhXfHMjxPkwwKZVRRWBxqDTXQbvKwrLhxkmZcSB">skillsyncph@gmal.com</a> <a>or message our Facebook page </a><a href="https://www.facebook.com/profile.php?id=61564369937925">SkillSync.</a> <a>We're here to help!</a>
           </p>
           
         </div>

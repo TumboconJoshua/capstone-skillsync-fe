@@ -6,98 +6,96 @@ import "./PolicyTerms.css"
 import NewLogo from './skillsync.png';
 import { Button } from "../../components/Component";
 
+const TermsPage = () => {
+  const navigate = useNavigate();
+  const [isClicked, setIsClicked] = useState(false);
 
-  
-  const TermsPage = () => {
-    const navigate = useNavigate();
-    const [isClicked, setIsClicked] = useState(false);
-  
-    const generateFloatingSquares2 = (numSquares) => {
-      const squares = [];
-      for (let i = 0; i < numSquares; i++) {
-        const style2 = {
-          left: `${Math.random() * 100}vw`,
-          animationDuration: `${5 + Math.random() * 30}s`,
-          animationDelay: `${Math.random() * 100}s`,
-        };
-        squares.push(<div key={i} className="floating" style={style2}></div>);
-      }
-      return squares;
-    };
-  
-    const containerStyle = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        background: '#cefad0',
-        zIndex: '10'
-        // background: 'linear-gradient(to bottom, #ffffff 30%, #cefad0)',
+  const generateFloatingSquares2 = (numSquares) => {
+    const squares = [];
+    for (let i = 0; i < numSquares; i++) {
+      const style2 = {
+        left: `${Math.random() * 100}vw`,
+        animationDuration: `${5 + Math.random() * 30}s`,
+        animationDelay: `${Math.random() * 100}s`,
       };
-    
-      const navbarStyle = {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        width: '100%',
-        padding: '10px 20px',
-        backgroundColor: '#f8f8f8',
-        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
-        zIndex: 1000,
-      };
-    
-      const TermsContentStyle = {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '80%',
-        maxWidth: '800px',
-        marginTop: '20px',
-        zIndex: '10'
-      };
-    
-      const cardStyle = {
-        backgroundColor: '#fff',
-        padding: '20px',
-        margin: '10px 0',
-        boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-        borderRadius: '8px',
-        width: '100%',
-        margin: '10px',
-        border: '1px solid ##088e54',
-        borderLeft: '5px solid #088e54',
-        textAlign: 'justify',
-        zIndex: '10'
-      };
-    
-    const handleClick = () => {
-      setIsClicked(true);
-      setTimeout(() => navigate('/home'), 500);
-    };
-  
-    return (
-      <div style={containerStyle}>
-        <nav style={navbarStyle}>
-          <div>
-            <Button size="xl" className="btn-primary" color="primary" onClick={handleClick}  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
+      squares.push(<div key={i} className="floating" style={style2}></div>);
+    }
+    return squares;
+  };
+
+  const containerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    // background: '#cefad0',
+    zIndex: '10'
+    // background: 'linear-gradient(to bottom, #ffffff 30%, #cefad0)',
+  };
+
+  const navbarStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    width: '100%',
+    padding: '10px 20px',
+    backgroundColor: '#f8f8f8',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+    zIndex: 1000,
+  };
+
+  const TermsContentStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '80%',
+    maxWidth: '800px',
+    marginTop: '20px',
+    zIndex: '10'
+  };
+
+  const cardStyle = {
+    backgroundColor: '#fff',
+    padding: '20px',
+    margin: '10px 0',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    borderRadius: '8px',
+    width: '100%',
+    margin: '10px',
+    border: '1px solid ##088e54',
+    borderLeft: '5px solid #088e54',
+    textAlign: 'justify',
+    zIndex: '10'
+  };
+
+  const handleClick = () => {
+    setIsClicked(true);
+    setTimeout(() => navigate('/home'), 500);
+  };
+
+  return (
+    <div style={containerStyle}>
+      <nav style={navbarStyle}>
+        <div>
+          <Button size="xl" className="btn-primary" color="primary" onClick={handleClick}  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
                        onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
-              <IoMdArrowRoundBack color="light" />
-            </Button>
-          </div>
-  
-          <Link to={process.env.PUBLIC_URL + "/home"} className="logo-link">
-            <img
-              className="logo-dark logo-img logo-img-lg mx-auto"
-              src={NewLogo}
-              alt="logo-dark"
-              style={{ width: '100px', height: '200px' }} />
-          </Link>
-          <div style={{ width: '80px' }} />
-        </nav>
-  
-        <section style={TermsContentStyle}>
-          <div style={cardStyle}>
-            <h2>Terms and Conditions</h2>
+            <IoMdArrowRoundBack color="light"/>
+          </Button>
+        </div>
+
+        <Link to={process.env.PUBLIC_URL + "/home"} className="logo-link">
+          <img
+            className="logo-dark logo-img logo-img-lg mx-auto"
+            src={NewLogo}
+            alt="logo-dark"
+            style={{ width: '70px', height: '200px' }} />
+        </Link>
+        <div style={{ width: '80px' }} />
+      </nav>
+
+      <section style={TermsContentStyle}>
+        <div style={cardStyle}>
+        <h2>Terms and Conditions</h2>
             <p>Welcome to SkillSync! These terms and conditions outline the rules and regulations for the use of SkillSync's platform.</p>
             <h3>1. Introduction</h3>
             <p>By accessing and using our platform, you accept these terms and conditions in full. If you disagree with these terms and conditions or any part of these terms and conditions, you must not use our platform.</p>
@@ -111,7 +109,7 @@ import { Button } from "../../components/Component";
               <li className="service-card-list-item">Reproduce, duplicate, or copy material from the platform</li>
               <li className="service-card-list-item">Redistribute content from the platform</li>
             </ul>
-            
+
             <h3>3. Acceptable Use</h3>
             <p>You must not use the platform in any way that causes, or may cause, damage to the platform or impairment of the availability or accessibility of the platform. You must not use the platform in any way which is unlawful, illegal, fraudulent, or harmful, or in connection with any unlawful, illegal, fraudulent, or harmful purpose or activity.</p>
   
@@ -149,34 +147,28 @@ import { Button } from "../../components/Component";
             <h3>12. Law and Jurisdiction</h3>
             <p>These terms and conditions will be governed by and construed in accordance with the laws of the Philippines, and any disputes relating to these terms and conditions will be subject to the exclusive jurisdiction of the courts of the Philippines.</p>
           </div>
-          <div className="container" style={animationContainerStyle}>
-          {generateFloatingSquares2(50)}
-        </div>
+            <div style={animationContainerStyle}>
+             {generateFloatingSquares2(50)}
+            </div>
         </section>
-      </div>
+    </div>
     );
-  };
-  
-  export default TermsPage;
+};
 
-  const animationContainerStyle = {
-    position: 'absolute',
-    top: '0',
-    left: '0',
-    bottom: '100%',
-    width: '100%',
-    height: '287%',
-    overflow: 'hidden',
-    zIndex: '1',
-    
-    '@media (maxWidth: 480px)': {
-      position: 'absolute',
-      overflow: 'hidden',
-      zIndex: '1',
-      width: '100%',
-      height: '500%',
-    },
-  };
+export default TermsPage;
 
+const linkStyle = {
+  color: '#526484',
+  textDecoration: 'none',
+}
 
-  
+const animationContainerStyle = {
+  position: 'absolute',
+  top: '0',
+  left: '0',
+  bottom: '100%',
+  width: '100%',
+  height: '287%',
+  overflow: 'hidden',
+  zIndex: '1',
+};

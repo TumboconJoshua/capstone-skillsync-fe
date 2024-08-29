@@ -15,7 +15,7 @@ const Navigation = () => {
   const logoStyle = {
     height: "80px",
     width: "120px",
-    margin: "0 20px",
+    margin: "0px 0px",
     '@media (maxWidth: 600px)': {
       margin: '0 0 10px 0',
     },
@@ -33,14 +33,14 @@ const Navigation = () => {
     <nav className="navigation" >
     <div className="nav-container">
       <div className="nav-logo" style={logoStyle}>
-        <img src={logo} alt="SkillSync Logo" style={{ height: '100%', width: '100%' }} />
+        <img src={logo} alt="SkillSync Logo" style={{ height: '90%', width: '65%' }}/>
       </div>
       <div className="nav-menu-icon" onClick={toggleMenu}>
         {isOpen ? <FaTimes /> : <FaBars />}
       </div>
       <ul className={`nav-menu ${isOpen ? "nav-menu-active" : ""}`} >
         <li>
-          <a href="/#home" onClick={toggleMenu} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Home</a>
+          <a href="/#/home" onClick={toggleMenu} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>Home</a>
         </li>
         <li>
           <a href="/#/about" onClick={toggleMenu}  onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>About</a>

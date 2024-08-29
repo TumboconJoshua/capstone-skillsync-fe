@@ -595,7 +595,7 @@ if (localStorage.getItem("role") != "Employer") {
                     <tr key={application.id}>
                         <td>{application.name}</td>
                         <td>
-                            <a href={`http://localhost:8000/api/${application.resume}`} target="_blank" rel="noreferrer">View Resume</a>
+                            <a href={`http://127.0.0.1:8000/api/${application.resume}`} target="_blank" rel="noreferrer">View Resume</a>
                         </td>
                         {/* Add more columns if needed */}
                     </tr>

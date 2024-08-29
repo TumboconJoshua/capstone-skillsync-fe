@@ -28,7 +28,7 @@ const PolicyPage = () => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    background: '#cefad0',
+    // background: '#cefad0',
     zIndex: '10'
     // background: 'linear-gradient(to bottom, #ffffff 30%, #cefad0)',
   };
@@ -89,7 +89,7 @@ const PolicyPage = () => {
             className="logo-dark logo-img logo-img-lg mx-auto"
             src={NewLogo}
             alt="logo-dark"
-            style={{ width: '100px', height: '200px' }} />
+            style={{ width: '70px', height: '200px' }} />
         </Link>
         <div style={{ width: '80px' }} />
       </nav>
@@ -140,11 +140,13 @@ const PolicyPage = () => {
             <br></br>
             <h3>7. Contact Us</h3>
             <p>If you have any questions or concerns about this Privacy Policy, please contact us at:</p>
-            <p><FaFacebook style={{ marginRight: '5px' }} /><a href="https://www.facebook.com/skillsyncpage" style={linkStyle}> Facebook</a></p>
-            <p><FaEnvelope style={{ marginRight: '5px' }} /> skillsync@gmail.com</p>
-            <p><FaSearchLocation style={{ marginRight: '5px' }}/> Address Example</p>
+            <p><FaFacebook style={{ marginRight: '5px' }} /><a href="https://www.facebook.com/profile.php?id=61564369937925" style={linkStyle} onMouseEnter={(e) => e.target.style.color = '#077947'}
+                       onMouseLeave={(e) => e.target.style.color = '#333'}> SkillSync</a></p>
+            <p><FaEnvelope style={{ marginRight: '5px' }} /> <a href="https://mail.google.com/mail/u/5/#inbox?compose=CllgCJvkXVKqfdlWWqtsSvHttXwJCtskgFZJrhXfHMjxPkwwKZVRRWBxqDTXQbvKwrLhxkmZcSB" style={linkStyle} onMouseEnter={(e) => e.target.style.color = '#077947'}
+                       onMouseLeave={(e) => e.target.style.color = '#333'}> skillsyncph@gmail.com</a></p>
+            <p><FaSearchLocation style={{ marginRight: '5px' }}/><a href="https://maps.app.goo.gl/JptGrJ5chWC5ZzC87" style={linkStyle} onMouseEnter={(e) => e.target.style.color = '#077947'}
+                       onMouseLeave={(e) => e.target.style.color = '#333'}> Olongapo City</a></p>
             </div>
-
             {/* To apply, you may send your resume, certificates, and requirements through our email:
 gbmercadoagency@gmail.com 
 gbmercadoagency.bataan@gmail.com 

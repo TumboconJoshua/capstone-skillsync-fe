@@ -3,8 +3,8 @@ import Navigation from "./Navigation";
 import profile1 from './1owner.jpg';
 import profile2 from './2owner.jpg';
 import profile3 from './3owner.jpg';
-import icon from './hire icon r.png';
-import logo from './skillsync.png'
+import icon from './vector.png';
+import logo from './skillsyncph.png'
 import { FaFacebook, FaEnvelope, FaPhone} from 'react-icons/fa';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBuilding, faUser, faTools } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +13,7 @@ import "./Services.css";
 const LandingPage = () => {
   const [selectedMember, setSelectedMember] = useState(null);
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [hover, setHover] = useState(false);
 
   // Modal Display
   const handleCardClick = (memberName) => {
@@ -99,31 +100,44 @@ const LandingPage = () => {
     
     <div>
       <Navigation />
-      <div id="/home" style={responsiveHomeStyle}>
-        <div style={responsiveContentStyle}>
-          <h1 style={{ fontFamily: 'sans-serif', fontWeight: 'bolder', fontSize: '3.5rem', margin: '0' }}>
-            Welcome to SkillSync
+      <div id="home">
+        <div className="content">
+          <h1 className="heading">
+            WELCOME TO SKILLSYNC
           </h1>
-          <p style={{ fontFamily: 'sans-serif', marginTop: '20px', fontSize: '1.2rem', margin: '0' }}>
+          <p style={{ fontFamily: 'sans-serif', marginTop: '20px', fontSize: '1.3rem', margin: '10px' }}>
             "Where Talent meets Equal and Limitless Opportunities."
           </p>
-          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', padding: '0 20px' }}>
-            <a style={buttonStyle} href={`${process.env.PUBLIC_URL}/auth`}  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
-                       onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
-              Sign In
+          <div className="buttons" style={{ display: 'flex', marginTop: '20px', padding: '0 30px' }}>
+            <a style={buttonStyle} href={`${process.env.PUBLIC_URL}/auth`} 
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
+              SIGN-IN
             </a>
-            <a style={buttonStyle} href={`${process.env.PUBLIC_URL}/reg-job`}  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
-                       onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
-              Sign Up
+            <a style={buttonStyle} href={`${process.env.PUBLIC_URL}/reg-job`} 
+              onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
+              onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
+              SIGN-UP
             </a>
           </div>
         </div>
-        <img src={icon} alt="icon" style={responsiveImageStyle} />
-        <div style={animationContainerStyle}>
-          {generateFloatingSquares1(10)}
+          <img
+            src={icon}
+            alt="icon"
+            className={`icon ${hover ? 'hover' : ''}`}
+            style={{
+              transition: 'transform 0.3s, filter 0.3s',
+              transform: hover ? 'scale(1.1) translateY(-10px)' : 'scale(1) translateY(0)',
+              filter: hover ? 'brightness(1.2)' : 'brightness(1)'
+            }}
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          />
+            <div style={animationContainerStyle}>
+              {generateFloatingSquares1(10)}
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
 
 
 
@@ -145,13 +159,13 @@ const LandingPage = () => {
         </p>
 
         <div style={{ marginTop: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', flexWrap: 'wrap', marginBottom: '201px' }}>
-          <a style={buttonStyle} href="https://www.facebook.com/gbmercado.manpower"  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
+          <a style={buttonStyle} href="https://www.facebook.com/profile.php?id=61564369937925"  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
                        onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
-            Visit FB Page
+            VISIT OUR FB PAGE
           </a>
           <a style={buttonStyle} href={`${process.env.PUBLIC_URL}/learn`}  onMouseEnter={(e) => e.target.style.backgroundColor = '#077947'}
                        onMouseLeave={(e) => e.target.style.backgroundColor = '#088e54'}>
-            Learn More
+            LEARN MORE
           </a>
         </div>
       </div>
@@ -289,9 +303,10 @@ const LandingPage = () => {
 
         <div style={centerSectionStyle}>
           <p style={headerStyle}>Contact us</p>
-          <p><FaFacebook style={{ marginRight: '5px' }} /><a href="https://www.facebook.com/yourpage" style={linkStyle} onMouseEnter={(e) => e.target.style.color = '#077947'}
-                       onMouseLeave={(e) => e.target.style.color = '#333'}> Facebook</a></p>
-          <p><FaEnvelope style={{ marginRight: '5px' }} /> skillsync@gmail.com</p>
+          <p><FaFacebook style={{ marginRight: '5px' }} /><a href="https://www.facebook.com/profile.php?id=61564369937925" style={linkStyle} onMouseEnter={(e) => e.target.style.color = '#077947'}
+                       onMouseLeave={(e) => e.target.style.color = '#333'}> SkillSync</a></p>
+          <p><FaEnvelope style={{ marginRight: '5px' }} /><a href="https://mail.google.com/mail/u/5/#inbox?compose=CllgCJvkXVKqfdlWWqtsSvHttXwJCtskgFZJrhXfHMjxPkwwKZVRRWBxqDTXQbvKwrLhxkmZcSB" style={linkStyle} onMouseEnter={(e) => e.target.style.color = '#077947'}
+                       onMouseLeave={(e) => e.target.style.color = '#333'}> skillsyncph@gmail.com</a></p>
           <p><FaPhone style={{ marginRight: '5px' }} /> +63 905 508 2630</p>
         </div>
 
@@ -319,36 +334,33 @@ export default LandingPage;
 // Home
 const responsiveHomeStyle = {
   padding: '50px 20px',
-  textAlign: 'center',
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'center',
+  justifyContent: 'center',
   background: 'linear-gradient(to bottom, #ffffff 40%, #cefad0)',
   position: 'relative',
-  overflow: 'hidden', // Ensure no overflow on smaller screens
+  overflow: 'hidden',
   '@media(minWidth: 768px)': {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: 'row', // Row direction for larger screens
+    justifyContent: 'space-between', // Space between content and image
     textAlign: 'left',
   },
 };
 
 const responsiveContentStyle = {
   fontFamily: 'sans-serif',
-  marginTop: '30px',
-  marginBottom: '50px',
   width: '100%',
   zIndex: '10',
   '@media(minWidth: 768px)': {
     width: '50%',
-    marginTop: '0',
-    marginBottom: '0',
+    textAlign: 'left', // Align text to the left on larger screens
+    margin: '0', // Remove margins on larger screens
   },
   '@media(maxWidth: 768px)': {
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    textAlign: 'center',
+    textAlign: 'center', // Center text on smaller screens
+    marginTop: '30px',
+    marginBottom: '50px',
   },
 };
 
@@ -359,8 +371,11 @@ const responsiveImageStyle = {
   '@media(minWidth: 768px)': {
     width: '50%',
     marginTop: '0',
+    marginLeft: 'auto',
+    marginRight: '0', // Align image to the right
   },
   '@media(maxWidth: 768px)': {
+    width: '100%',
     marginTop: 'auto',
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -563,7 +578,8 @@ const rightSectionStyle = {
 };
 
 const logoStyle = {
-  width: '150px',
+  marginTop: '20px',
+  width: '100px',
   height: '100px',
 };
 
