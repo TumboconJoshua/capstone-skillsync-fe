@@ -32,7 +32,7 @@ const Sidebar = ({ fixed, className, ...props }) => {
 
   return (
     <>
-      <div className={classes}>
+      <div className={classes} style={{ backgroundColor: '' }}>
         <div className="logo-container">
           <img
             src={logo}
@@ -54,7 +54,11 @@ const Sidebar = ({ fixed, className, ...props }) => {
         </div>
         <div className="nk-sidebar-content" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <SimpleBar className="nk-sidebar-menu">
-            <Menu />
+            <Menu
+            itemClassName="menu-item"
+            itemStyle={{ color: 'white' }}
+            itemHoverStyle={{ backgroundColor: '#e6e6e6', color: 'black' }}
+            activeItemStyle={{ backgroundColor: 'white', color: 'green' }}/>
           </SimpleBar>
         </div>
       </div>

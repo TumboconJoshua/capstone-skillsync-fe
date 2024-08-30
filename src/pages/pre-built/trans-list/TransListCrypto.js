@@ -206,7 +206,7 @@ const TransListCrypto = () => {
               className="logo-dark logo-img logo-img-lg mx-auto"
               src={NewLogo}
               alt="logo-dark"
-              style={{ width: '100px', height: '200px' }} />
+              style={{ width: '70px', height: '200px' }} />
           </Link>
         <div style={{ width: '80px' }} />
       </nav>
@@ -236,9 +236,7 @@ const TransListCrypto = () => {
               <Form className="mt-4" onSubmit={handleSubmit(handleFormSubmit)}>
                 <Row className="g-gs">
                   <Col md="6">
-                    <span className="text-muted"
-                      style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-34px', marginLeft: '23%' }}
-                    >(Required)</span>
+                    
                     <label className="form-label">Profile picture</label>
                     <PreviewAltCard>
                       <div className="card-title-group align-start mb-0">
@@ -266,8 +264,7 @@ const TransListCrypto = () => {
                 <Row>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">First Name
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span></label>
+                      <label className="form-label">First Name</label>
                       <input
                         id="first_name"
                         placeholder="Enter your first name"
@@ -281,9 +278,7 @@ const TransListCrypto = () => {
                   </Col>
                   <Col md="6">
                     <div className="form-group">
-                      <label className="form-label">Last Name
-                      <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
-                      </label>
+                      <label className="form-label">Last Name</label>
                       <input
                         id="last_name"
                         placeholder="Enter your last name"
@@ -297,10 +292,10 @@ const TransListCrypto = () => {
                   </Col>
                 </Row>
                 <Row>
-                <Col md="6">
+                <Col md="4">
                   <div className="form-group">
                     <label className="form-label">Sex
-                    <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                    
                     </label>
                     <select
                       className="form-control"
@@ -308,38 +303,20 @@ const TransListCrypto = () => {
                       {...register('gender', { required: true })}
                       id="gender"
                     >
-                      <option value="">Select your Sex</option>
+                      <option value="" disabled selected>
+                          Select your sex
+                        </option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
                     {errors.gender && <p className="invalid">This field is required</p>}
                   </div>
                 </Col>
-                <Col md="6">
-                  <div className="form-group">
-                    <label className="form-label">Contact number
-                    <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
-                    </label>
-                    <input
-                      type="number"
-                      className="form-control"
-                      pattern="\d{11}"
-                      title="Contact number must be 11 digits"
-                      maxLength="11"
-                      id="contact"
-                      placeholder="ex. 09123456789"
-                      {...register('contact', { required: true, pattern: /^[0-9]{11}$/ })}
-                    />
-                    {errors.contact && <p className="invalid">This field is required and must be 11 digits</p>}
-                  </div>
-                </Col>
-                </Row>
-                <Row>
-                <Col md="6">
+                <Col md="4">
                     <div className="form-group">
                       <label className="form-label">
                         Birthday
-                        <span className="text-muted" style={{ fontSize: '10px' }}> (required)</span>
+                        
                       </label>
                       <input
                         type="date"
@@ -368,34 +345,52 @@ const TransListCrypto = () => {
                       )}
                     </div>
                   </Col>
-
-                  <Col md="6">
-                      <div className="form-group">
-                        <label className="form-label">Birth Place
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
-                        </label>
-                        <input
-                          type="text"
-                          id="birth_place"
-                          {...register('birth_place', { required: true })}
-                          placeholder="Enter your birthplace"
-                          className="form-control" />
-                        {errors.birth_place && <p className="invalid">This field is required</p>}
-                      </div>
-                    </Col>
-
+                  <Col md="4">
+                    <div className="form-group">
+                      <label className="form-label">Contact number
+                      
+                      </label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        pattern="\d{11}"
+                        title="Contact number must be 11 digits"
+                        maxLength="11"
+                        id="contact"
+                        placeholder="ex. 09123456789"
+                        {...register('contact', { required: true, pattern: /^[0-9]{11}$/ })}
+                      />
+                      {errors.contact && <p className="invalid">This field is required and must be 11 digits</p>}
+                    </div>
+                  </Col>
                 </Row>
                 <Row>
+                  <Col md="4">
+                    <div className="form-group">
+                      <label className="form-label">Birth Place
+                        
+                      </label>
+                      <input
+                        type="text"
+                        id="birth_place"
+                        {...register('birth_place', { required: true })}
+                        placeholder="Enter your birthplace"
+                        className="form-control" />
+                      {errors.birth_place && <p className="invalid">This field is required</p>}
+                    </div>
+                  </Col>
                   <Col md="4"> 
                     <div className="form-group">
                       <label className="form-label">Civil Status
-                      <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                      
                       </label>
                       <select
                         className="form-control"
                         {...register('civil_status', { required: true })}
                       >
-                        <option value="">Select your Civil Status</option>
+                        <option value="" disabled selected>
+                          Select your civil status
+                        </option>
                         <option value="single">Single</option>
                         <option value="in a relationship">In a relationship</option>
                         <option value="married">Married</option>
@@ -410,7 +405,7 @@ const TransListCrypto = () => {
                     <div className="form-group">
                       <label className="form-label">
                         Citizenship
-                        <span className="text-muted" style={{ fontSize: '10px' }}> (Required)</span>
+                        
                       </label>
                       <select
                         id="citizenship"
@@ -443,11 +438,12 @@ const TransListCrypto = () => {
                       {errors.citizenship && <p className="invalid">This field is required</p>}
                     </div>
                   </Col>
-
+                </Row>
+                <Row>
                   <Col md="4">
                     <div className="form-group">
                       <label className="form-label">Email
-                      <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                      
                       </label>
                       <input type="text"
                         id="email"
@@ -457,20 +453,19 @@ const TransListCrypto = () => {
                         className="form-control" />
                       {errors.email && <p className="invalid">This field is required</p>}
                     </div>
-                  </Col> 
-                </Row>     
-
-                <Row>
-                  <Col md="6"> 
+                  </Col>
+                  <Col md="4"> 
                     <div className="form-group">
                       <label className="form-label">Job Category:
-                      <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                 
                       </label>
                       <select
                         className="form-control"
                         {...register('category', { required: true })}
                       >
-                        <option value="">Select your Job Category</option>
+                        <option value="" disabled selected>
+                          Select your job category
+                        </option>
                         <option value="1">Office Work</option>
                         <option value="2">Production</option>
                         <option value="3">Skilled</option>
@@ -496,7 +491,7 @@ const TransListCrypto = () => {
                       {errors.category && <p className="invalid">This field is required</p>}
                     </div>
                   </Col>
-                  <Col md="6">
+                  <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Pag-Ibig No.
                         <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
@@ -508,48 +503,48 @@ const TransListCrypto = () => {
                           className="form-control" />
                         {errors.pagibig && <p className="invalid">This field is required</p>}
                       </div>
-                    </Col>
-                </Row>
+                    </Col> 
+                </Row>     
                 <Row>
-                <Col md="4">
-                      <div className="form-group">
-                        <label className="form-label">SSS No.
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
-                        </label>
-                        <input type="number"
-                          id="sss"
-                          placeholder="Enter your SSS no."
-                          {...register('sss', { required: false })}
-                          className="form-control" />
-                        {errors.sss && <p className="invalid">This field is required</p>}
-                      </div>
-                    </Col>
-                    <Col md="4">
-                      <div className="form-group">
-                        <label className="form-label">Philhealth No.
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
-                        </label>
-                        <input type="number"
-                          id="philhealth"
-                          placeholder="Enter your Philhealth no."
-                          {...register('philhealth', { required: false })}
-                          className="form-control" />
-                        {errors.philhealth && <p className="invalid">This field is required</p>}
-                      </div>
-                    </Col>
-                    <Col md="4">
-                      <div className="form-group">
-                        <label className="form-label">Tin No.
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
-                        </label>
-                        <input type="number"
-                          id="tin"
-                          placeholder="Enter your Tin no."
-                          {...register('tin', { required: false })}
-                          className="form-control" />
-                        {errors.tin && <p className="invalid">This field is required</p>}
-                      </div>
-                    </Col>
+                  <Col md="4">
+                    <div className="form-group">
+                      <label className="form-label">SSS No.
+                      <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                      </label>
+                      <input type="number"
+                        id="sss"
+                        placeholder="Enter your SSS no."
+                        {...register('sss', { required: false })}
+                        className="form-control" />
+                      {errors.sss && <p className="invalid">This field is required</p>}
+                    </div>
+                  </Col>
+                  <Col md="4">
+                    <div className="form-group">
+                      <label className="form-label">Philhealth No.
+                      <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                      </label>
+                      <input type="number"
+                        id="philhealth"
+                        placeholder="Enter your Philhealth no."
+                        {...register('philhealth', { required: false })}
+                        className="form-control" />
+                      {errors.philhealth && <p className="invalid">This field is required</p>}
+                    </div>
+                  </Col>
+                  <Col md="4">
+                    <div className="form-group">
+                      <label className="form-label">Tin No.
+                      <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                      </label>
+                      <input type="number"
+                        id="tin"
+                        placeholder="Enter your Tin no."
+                        {...register('tin', { required: false })}
+                        className="form-control" />
+                      {errors.tin && <p className="invalid">This field is required</p>}
+                    </div>
+                  </Col>
                 </Row>
 
 
@@ -557,7 +552,7 @@ const TransListCrypto = () => {
                   <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Address No.
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                        
                         </label>
                         <input type="text"
                           id="address"
@@ -570,7 +565,7 @@ const TransListCrypto = () => {
                     <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Street</label>
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                     
                           <input
                             type="text"
                             id="street"
@@ -583,7 +578,7 @@ const TransListCrypto = () => {
                     <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Barangay
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                        
                         </label>
                         <input
                           type="text"
@@ -600,7 +595,7 @@ const TransListCrypto = () => {
                     <Col md="4">
                       <div className="form-group">
                         <label className="form-label">City
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                       
                         </label>
                         <input
                           type="text"
@@ -614,7 +609,7 @@ const TransListCrypto = () => {
                     <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Province
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                    
                         </label>
                         <input
                           type="text"
@@ -628,13 +623,15 @@ const TransListCrypto = () => {
                     <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Region
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                       
                         </label>
                         <select
                         className="form-control"
                         {...register('region', { required: true })}
                       >
-                        <option value="">Select your Region</option>
+                        <option value="" disabled selected>
+                          Select your region
+                        </option>
                         <option value="Region I">Region I</option>
                         <option value="Region II">Region II</option>
                         <option value="Region III">Region III</option>
@@ -662,7 +659,7 @@ const TransListCrypto = () => {
                       <div className="form-group">
                         <label className="form-label">
                           Country
-                          <span className="text-muted" style={{ fontSize: '10px' }}> (Required)</span>
+                          
                         </label>
                         <select
                           id="country"
@@ -722,7 +719,7 @@ const TransListCrypto = () => {
                     <Col md="4">
                       <div className="form-group">
                         <label className="form-label">Zip code
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
+                      
                         </label>
                         <input
                           type="number"
@@ -734,14 +731,10 @@ const TransListCrypto = () => {
                       </div>
                     </Col>
 
-                  </Row>
-                  
-                  <Row>
-                  <Col md="6">
+                    <Col md="4">
                       <div className="form-group">
                         <label className="form-label">
                           Educational Attainment
-                          <span className="text-muted" style={{ fontSize: '10px' }}> (Optional)</span>
                         </label>
                         <select
                           id="educational_attainment"
@@ -759,25 +752,25 @@ const TransListCrypto = () => {
                         {errors.educational_attainment && <p className="invalid">This field is required</p>}
                       </div>  
                     </Col>
-                    <Col md="3">
+
+                  </Row>
+                  
+                  <Row>
+                    <Col md="8">
                       <div className="form-group">
-                        <label className="form-label">Experience
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
-                        </label>
+                        <label className="form-label">Experience</label>
                         <input
                           type="text"
                           id="experience"
                           {...register('experience', { required: true })}
-                          placeholder="Enter your experience"
+                          placeholder="Enter your work experience"
                           className="form-control" />
                         {errors.experience && <p className="invalid">This field is required</p>}
                       </div>
                     </Col>
-                    <Col md="3">
+                    <Col md="4">
                       <div className="form-group">
-                        <label className="form-label">Experience Years
-                        <span className="text-muted" style={{ fontSize: '10px'}}> (Required)</span>
-                        </label>
+                        <label className="form-label">Experience Years</label>
                         <input
                           type="text"
                           id="experience_years"
@@ -788,7 +781,9 @@ const TransListCrypto = () => {
                       </div>
                     </Col>
                   </Row>
+
                   <br></br><br></br>
+
                   <Row className="mt-3">
                     <Col xs="12">
                       <div className="d-flex justify-content-between">
@@ -811,8 +806,6 @@ const TransListCrypto = () => {
                       </div>
                     </Col>
                   </Row>
-
-                  
               </Form>
             </div>
           </PreviewAltCard>

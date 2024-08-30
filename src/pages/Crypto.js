@@ -6,15 +6,8 @@ import {
   BlockHead,
   BlockHeadContent,
   BlockTitle,
-  BlockDes,
-  BackTo,
-  PreviewCard,
-  ReactDataTable,
-  NioIconCard,
   BlockBetween
 } from "../components/Component";
-import { Form, Spinner, Alert } from "reactstrap";
-// import {  NioIconCard } from "../../../components/Component";
 import Icon from "../components/icon/Icon";
 import {
     Button,
@@ -22,32 +15,19 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    Row,
     Col,
     Card,
-    CardHeader,
-    CardFooter,
-    CardImg,
     CardText,
     CardBody,
     CardTitle,
     CardSubtitle,
     CardLink,
-    // Button,
-
-    Nav,
-    NavLink,
-    NavItem,
-    TabContent,
-    TabPane,
-    DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle, Badge
   } from "reactstrap";
-import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "../webpages/admin/TableData";
-import axios from 'axios';
 import { BASE_URL  } from "../web_modules/axios/auth";
 import ApiService from '../web_modules/base/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
+import Swal from 'sweetalert2';
 
 
 
@@ -65,18 +45,25 @@ const Job = ({ ...props }) => {
 
     useEffect(() => {
       if (errorVal) {
-          const timer = setTimeout(() => setError1(""), 3000); // Adjust time as needed (e.g., 3000ms = 3 seconds)
-          return () => clearTimeout(timer);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: errorVal,
+          confirmButtonText: 'OK',
+        }).then(() => setError(""));
       }
-  }, [errorVal]);
-
+    }, [errorVal]);
+  
     useEffect(() => {
       if (success) {
-          console.log('Success message:', success); // Add this line
-          const timer = setTimeout(() => setSuccess(""), 3000);
-          return () => clearTimeout(timer);
+        Swal.fire({
+          icon: 'success',
+          title: 'Success!',
+          text: success,
+          confirmButtonText: 'OK',
+        }).then(() => setSuccess(""));
       }
-  }, [success]);
+    }, [success]);
 
     const handleView = (row) => {
         // Set the selected job data
@@ -125,7 +112,7 @@ const Job = ({ ...props }) => {
          
           if (response.status == 0) {
             setError(response.message);
-          }else{
+          } else{
             setSuccess(response.message);
           }
           fetchJobs();
@@ -272,23 +259,22 @@ if (localStorage.getItem("role") != "Employer") {
               fetchJobs();
             })
             .catch((error) => {
-                // Handle errors
+                
                 console.error('Error deleting job', error);
             });
     };
     const handleInputChange = (e) => {
-      // console.log(e.target);
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
       };
 
-    // Call the function
+    
 
     const handleFormSubmit = () => {
         console.log('Submitting formData:', formData); // Add this line
         apiService.createJob(formData)
             .then((response) => {
-                // console.log('Job created successfully', response.data);
+                
                 setModal(false);
                 fetchJobs();
             })
@@ -369,25 +355,14 @@ if (localStorage.getItem("role") != "Employer") {
 
 
     useEffect(() => {
-        // Fetch jobs data when the component mounts
         fetchJobs();
-    }, []); // Empty dependency array ensures this effect runs only once on mount
+    }, []); 
 
     const fetchJobs = async () => {
-        // var finalData = [];
+        
         apiService.fetchGeneralJobs()
             .then((response) => {
                 console.log('Jobs fetched successfully', response);
-                // for (let i = 0; i < response.data.length; i++) {
-                //     finalData.push({
-                //         id: response.data.data[i].id,
-                //         title: response.data.data[i].title,
-                //         description: response.data.data[i].description,
-                //         location: response.data.data[i].location,
-                //         salary: response.data.data[i].salary,
-                //         requirements: response.data.data[i].requirements,
-                //     });
-                // }
                 setJobs(response.data);
                 setOrigJobs(response.data);
             })
@@ -449,24 +424,9 @@ if (localStorage.getItem("role") != "Employer") {
                   </li>
                 </ul>
               </div>
-            
           </BlockHeadContent>
-          </BlockBetween>
-          </BlockHead>
-          {errorVal && (
-            <div className="mb-3">
-              <Alert color="danger" className="alert-icon">
-                <Icon name="alert-circle" /> {errorVal}
-              </Alert>
-            </div>
-          )}
-          {success && (
-            <div className="mb-3">
-              <Alert color="success" className="alert-icon">
-                <Icon name="alert-circle" /> {success}
-              </Alert>
-            </div>
-          )}
+        </BlockBetween>
+      </BlockHead>
           
           <div className="row">
                 {jobs.length === 0 ? <p>There are no jobs.</p> : ""}
@@ -595,7 +555,7 @@ if (localStorage.getItem("role") != "Employer") {
                     <tr key={application.id}>
                         <td>{application.name}</td>
                         <td>
-                            <a href={`http://127.0.0.1:8000/api/${application.resume}`} target="_blank" rel="noreferrer">View Resume</a>
+                            <a href={`http://localhost:8000/api/${application.resume}`} target="_blank" rel="noreferrer">View Resume</a>
                         </td>
                         {/* Add more columns if needed */}
                     </tr>
@@ -678,7 +638,7 @@ if (localStorage.getItem("role") != "Employer") {
               />
             </div>
             <div className="form-group">
-              <label htmlFor="dueDate">Due Date</label>
+              <label htmlFor="due_date">Due Date</label>
               <input
                   type="date"
                   id="due_date"
@@ -698,16 +658,7 @@ if (localStorage.getItem("role") != "Employer") {
                 className="form-control"
               />
             </div>
-            {/* <div className="form-group">
-              <label>Due date and time</label>
-              <input
-                type="text"
-                name="due"
-                value={formData.slot}
-                onChange={handleInputChange}
-                className="form-control"
-              />
-            </div> */}
+  
             <div className="form-group">
                 <label>
                     Job Category
@@ -716,10 +667,10 @@ if (localStorage.getItem("role") != "Employer") {
                     id="job_category"
                     className="form-control"
                     name="job_category"
-                    value={formData.job_category} // Set default value to an empty string
+                    value={formData.job_category} 
                     onChange={handleInputChange}
                 >
-                    {/* Map through the list of job categories and render options */}
+                    
                     {[
                    { id: 1, name: 'Office Work' },
                    { id: 2, name: 'Production' },

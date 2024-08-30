@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import NewLogo from "../images/skillsync.png";
+import NewLogo from "./skillsync.png";
 import Head from "../layout/head/Head";
 import {
   Block,
@@ -89,7 +89,7 @@ const RegisterJobseeker = () => {
               className="logo-dark logo-img logo-img-lg mx-auto"
               src={NewLogo}
               alt="logo-dark"
-              style={{ width: '100px', height: '200px' }} />
+              style={{ width: '70px', height: '200px' }} />
           </Link>
         <div style={{ width: '80px' }} />
       </nav>

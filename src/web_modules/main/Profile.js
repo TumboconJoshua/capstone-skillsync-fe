@@ -6,46 +6,21 @@ import {
   BlockHead,
   BlockHeadContent,
   BlockTitle,
-  BlockDes,
-  BackTo,
-  PreviewCard,
-  ReactDataTable,
-  NioIconCard,
-  BlockBetween
 } from "../../components/Component";
 import { useForm } from "react-hook-form";
-// import {  NioIconCard } from "../../../components/Component";
 import Icon from "../../components/icon/Icon";
 import {
   Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Row,
   Col,
   Card,
-  CardHeader,
-  CardFooter,
-  CardImg,
-  CardText,
   CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardLink,
-  // Button,
-
-  Nav,
-  NavLink,
-  NavItem,
-  TabContent,
-  TabPane,
-  DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle, Badge, Spinner, Alert
+  Spinner,
 } from "reactstrap";
-import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./TableData";
-import axios from 'axios';
 import { BASE_URL } from "../axios/auth";
 import ApiService from '../base/axios';
+import Swal from 'sweetalert2';
+
 const Profile = ({ ...props }) => {
   const [loading, setLoading] = useState(false);
   const [loading2, setLoading2] = useState(false);
@@ -59,40 +34,56 @@ const Profile = ({ ...props }) => {
   const [confirmNewPassState, setConfirmNewPassState] = useState(false);
 
   const [errorVal1, setError1] = useState("");
-    const [errorVal2, setError2] = useState("");
+  const [errorVal2, setError2] = useState("");
  
-    const [success, setSuccess] = useState("");
-    const [successPass, setPassASuccess ] = useState("");
+  const [success, setSuccess] = useState("");
+  const [successPass, setPasswordSuccess ] = useState("");
 
-    useEffect(() => {
-      if (errorVal1) {
-          const timer = setTimeout(() => setError1(""), 3000); // Adjust time as needed (e.g., 3000ms = 3 seconds)
-          return () => clearTimeout(timer);
-      }
+  useEffect(() => {
+    if (errorVal1) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal1,
+        confirmButtonText: 'OK', // Add an "OK" button
+      }).then(() => setError1("")); // Reset errorVal1 after user clicks "OK"
+    }
   }, [errorVal1]);
 
   useEffect(() => {
-      if (errorVal2) {
-          const timer = setTimeout(() => setError2(""), 3000);
-          return () => clearTimeout(timer);
-      }
+    if (errorVal2) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal2,
+        confirmButtonText: 'OK', // Add an "OK" button
+      }).then(() => setError2("")); // Reset errorVal2 after user clicks "OK"
+    }
   }, [errorVal2]);
 
   useEffect(() => {
     if (success) {
-        console.log('Success message:', success); // Add this line
-        const timer = setTimeout(() => setSuccess(""), 3000);
-        return () => clearTimeout(timer);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: success,
+        confirmButtonText: 'OK', // Add an "OK" button
+      }).then(() => setSuccess("")); // Reset success after user clicks "OK"
     }
-}, [success]);
+  }, [success]);
 
   useEffect(() => {
-      if (successPass) {
-          console.log('Success message:', success); // Add this line
-          const timer = setTimeout(() => setPassASuccess(""), 3000);
-          return () => clearTimeout(timer);
-      }
+    if (successPass) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: successPass,
+        confirmButtonText: 'OK', // Add an "OK" button
+      }).then(() => setPasswordSuccess("")); // Reset successPass after user clicks "OK"
+    }
   }, [successPass]);
+
+
 
   const profile = JSON.parse(localStorage.getItem('contact'));
   const user = JSON.parse(localStorage.getItem('user'));
@@ -370,20 +361,7 @@ const Profile = ({ ...props }) => {
                         </Row>
                       </form>          
                       <br></br>
-                      {success && (
-                        <div className="mb-3">
-                          <Alert color="success" className="alert-icon">
-                            <Icon name="alert-circle" /> {success}
-                          </Alert>
-                        </div>
-                      )}
-                      {errorVal1 && (
-                          <div className="mb-3">
-                              <Alert color="danger" className="alert-icon">
-                                  <Icon name="alert-circle" /> {errorVal1}
-                              </Alert>
-                          </div>
-                      )}
+                      
                     </CardBody> 
                 </Card>
             </Col>
@@ -396,20 +374,7 @@ const Profile = ({ ...props }) => {
                   <Card className="card-bordered">
                       <CardBody className="card-inner">
                   <h5 className="mb-3">Change Password</h5>
-                  {successPass && (
-                          <div className="mb-3">
-                            <Alert color="success" className="alert-icon">
-                              <Icon name="alert-circle" /> {successPass}
-                            </Alert>
-                          </div>
-                        )}
-                  {errorVal2 && (
-                    <div className="mb-3">
-                      <Alert color="danger" className="alert-icon">
-                        <Icon name="alert-circle" />{errorVal2}
-                      </Alert>
-                    </div>
-                  )}
+                  
                   <form onSubmit={handleSubmitForm2(handlePasswordChange)}>
                     <div className="form-group">
                       <label className="form-label" htmlFor="old_password">

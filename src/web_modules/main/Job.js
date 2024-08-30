@@ -7,15 +7,8 @@ import {
   BlockHead,
   BlockHeadContent,
   BlockTitle,
-  BlockDes,
-  BackTo,
-  PreviewCard,
-  ReactDataTable,
-  NioIconCard,
   BlockBetween
 } from "../../components/Component";
-import { Form, Spinner, Alert } from "reactstrap";
-// import {  NioIconCard } from "../../../components/Component";
 import Icon from "../../components/icon/Icon";
 import {
   Button,
@@ -23,33 +16,19 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Row,
   Col,
   Card,
-  CardHeader,
-  CardFooter,
-  CardImg,
   CardText,
   CardBody,
   CardTitle,
   CardSubtitle,
   CardLink,
-  // Button,
-
-  Nav,
-  NavLink,
-  NavItem,
-  TabContent,
-  TabPane,
-  DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle, Badge
 } from "reactstrap";
-import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./TableData";
-import axios from 'axios';
 import { BASE_URL } from "../axios/auth";
 import ApiService from '../base/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
-
+import Swal from 'sweetalert2';
 
 const Job = ({ ...props }) => {
   // const BASE_URL = "http://skill-sync-api.test/api";
@@ -62,6 +41,30 @@ const Job = ({ ...props }) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [errorVal, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    if (errorVal) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal,
+        confirmButtonText: 'OK',
+      }).then(() => setError(""));
+    }
+  }, [errorVal]);
+
+  useEffect(() => {
+    if (success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: success,
+        confirmButtonText: 'OK',
+      }).then(() => setSuccess(""));
+    }
+  }, [success]);
+
+
   const navigate = useNavigate();
 
   const handleView = (row) => {
@@ -86,6 +89,7 @@ const Job = ({ ...props }) => {
   const [modal, setModal] = useState(false);
   const token = localStorage.getItem('accessToken');
   const [apiService, setApiService] = useState(new ApiService(BASE_URL, token));
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -99,6 +103,8 @@ const Job = ({ ...props }) => {
     soft_sskill: "",
     job_category: 1,
   });
+
+  
 
 
   const handleSubmitResume = () => {
@@ -277,20 +283,30 @@ const Job = ({ ...props }) => {
     ];
   }
   const handleDelete = (row) => {
-    // Implement the logic for deleting a job
-    // console.log('Deleting job:', row);
-
-    // Add your delete logic using the job id, for example
     const jobIdToDelete = row.id;
-    apiService.deleteJob(jobIdToDelete)
-      .then((response) => {
-        fetchJobs();
-      })
-      .catch((error) => {
-        // Handle errors
-        console.error('Error deleting job', error);
-      });
+
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to recover this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes',
+      cancelButtonText: 'Cancel',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        apiService.deleteJob(jobIdToDelete)
+          .then((response) => {
+            fetchJobs();
+            setSuccess("Job has been deleted successfully!"); // Set success message
+          })
+          .catch((error) => {
+            console.error('Error deleting job', error);
+            setError("Failed to delete job. Please try again."); // Set error message
+          });
+      }
+    });
   };
+
   const handleInputChange = (e) => {
     // console.log(e.target);
     const { name, value } = e.target;
@@ -304,15 +320,18 @@ const Job = ({ ...props }) => {
   // Call the function
 
   const handleFormSubmit = () => {
-    console.log('Submitting formData:', formData); // Add this line
+    console.log('Submitting formData:', formData); // Log the form data
+
     apiService.createJob(formData)
       .then((response) => {
-        // console.log('Job created successfully', response.data);
-        setModal(false);
-        fetchJobs();
+        console.log('Job created successfully', response.data);
+        setModal(false); // Close the modal on success
+        fetchJobs(); // Fetch updated job list
+        setSuccess("Job has been added successfully!"); // Set success message
       })
       .catch((error) => {
         console.error('Error creating job', error);
+        setError("Failed to add job. Please try again."); // Set error message
       });
   };
 
@@ -354,6 +373,8 @@ const Job = ({ ...props }) => {
     // Open the edit modal
     setEditModal(true);
   };
+
+  
   let resumeAge = null;
   
   const handleViewResume = (id) => {
@@ -388,11 +409,13 @@ const Job = ({ ...props }) => {
   const handleEditFormSubmit = () => {
     apiService.updateJob(editFormData.id, editFormData)
       .then((response) => {
-        setEditModal(false);
-        fetchJobs();
+        setEditModal(false); // Close the modal on success
+        fetchJobs(); // Refresh the job list
+        setSuccess("Job has been updated successfully!"); // Set success message
       })
       .catch((error) => {
         console.error('Error editing job', error);
+        setError("Failed to update job. Please try again."); // Set error message
       });
   };
 
@@ -506,20 +529,6 @@ const Job = ({ ...props }) => {
               </BlockHeadContent>
             </BlockBetween>
           </BlockHead>
-          {errorVal && (
-            <div className="mb-3">
-              <Alert color="danger" className="alert-icon">
-                <Icon name="alert-circle" /> {errorVal}
-              </Alert>
-            </div>
-          )}
-          {success && (
-            <div className="mb-3">
-              <Alert color="success" className="alert-icon">
-                <Icon name="alert-circle" /> {success}
-              </Alert>
-            </div>
-          )}
 
           <div className="row">
             {jobs.length === 0 ? <p>There are no jobs.</p> : ""}
@@ -979,7 +988,6 @@ const Job = ({ ...props }) => {
           <Button color="primary" onClick={handleFormSubmit}>
             Add New Job
           </Button>
-          {/* <span className="sub-text">New Job</span> */}
         </ModalFooter>
       </Modal>
       <Modal isOpen={editModal} toggle={() => setEditModal(false)}>
@@ -1178,7 +1186,7 @@ const Job = ({ ...props }) => {
         </ModalBody>
         <ModalFooter>
           <Button color="primary" onClick={handleEditFormSubmit}>Save</Button>
-          <Button color="secondary" onClick={() => setEditModal(false)}>Cancel</Button>
+          <Button color="danger" onClick={() => setEditModal(false)}>Cancel</Button>
         </ModalFooter>
       </Modal>
     </>

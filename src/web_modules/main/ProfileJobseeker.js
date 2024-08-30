@@ -6,28 +6,22 @@ import {
   BlockHead,
   BlockHeadContent,
   BlockTitle,
-
 } from "../../components/Component";
 import { useForm } from "react-hook-form";
 // import {  NioIconCard } from "../../../components/Component";
 import Icon from "../../components/icon/Icon";
 import {
     Button,
-
     Row,
     Col,
     Card,
-
     CardBody,
-
-    // Button,
-
-    Spinner,Alert
+    Spinner,
   } from "reactstrap";
-import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./TableData";
-import axios from 'axios';
+
 import { BASE_URL  } from "../axios/auth";
 import ApiService from '../base/axios';
+import Swal from "sweetalert2";
 
 
 const ProfileJB = ({ ...props }) => {
@@ -60,38 +54,55 @@ const ProfileJB = ({ ...props }) => {
 
   useEffect(() => {
     if (errorVal1) {
-      const timer = setTimeout(() => setError1(""), 3000);
-      return () => clearTimeout(timer);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal1,
+        confirmButtonText: 'OK', 
+      }).then(() => setError1("")); 
     }
   }, [errorVal1]);
 
   useEffect(() => {
     if (errorVal2) {
-      const timer = setTimeout(() => setError2(""), 3000);
-      return () => clearTimeout(timer);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal2,
+        confirmButtonText: 'OK', 
+      }).then(() => setError2("")); 
     }
   }, [errorVal2]);
 
   useEffect(() => {
     if (success) {
-      const timer = setTimeout(() => setSuccess(""), 3000);
-      return () => clearTimeout(timer);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: success,
+        confirmButtonText: 'OK', 
+      }).then(() => setSuccess("")); 
     }
   }, [success]);
 
   useEffect(() => {
     if (successPass) {
-      const timer = setTimeout(() => setPasswordSuccess(""), 3000);
-      return () => clearTimeout(timer);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: successPass,
+        confirmButtonText: 'OK', 
+      }).then(() => setPasswordSuccess("")); 
     }
   }, [successPass]);
+
 
   useEffect(() => {
     fetchJobs();
   }, []); 
 
   const fetchJobs = async () => {
-    setImagePreview(`http://127.0.0.1:8000/` + profile.profile_picture);
+    setImagePreview(`http://127.0.0.1:8000` + profile.profile_picture);
     setExperiences(ex || []);
     setEducation(ed || []);
   };
@@ -224,26 +235,36 @@ const ProfileJB = ({ ...props }) => {
                       <h5 className="mb-3">Basic Informationss</h5>
                       <form className="is-alter" onSubmit={handleSubmitForm1(handleFormSubmit)}>
                         <Row className="mt-2">
-                          <Col md="6">
-                          {imagePreview ? (
-                            <img 
+                          
+                        <Col
+                            md="12"
+                            style={{
+                              display: 'flex',         // Enable flexbox layout
+                              justifyContent: 'center', // Center horizontally
+                              alignItems: 'center',     // Center vertically
+                              height: '100%',           // Optional: to ensure the container has height
+                            }}
+                          >
+                            {imagePreview ? (
+                              <img 
                                 src={imagePreview} 
                                 alt="Preview" 
                                 className="image-preview" 
-                                style={{ width: '200px', height: '150px' }} 
-                            />
-                        ) : (
-                            <input 
+                                style={{ width: '200px', height: '200px' }} // Remove flexbox properties from img
+                              />
+                            ) : (
+                              <input 
                                 {...registerForm1('profile_picture')}
                                 type="file" 
                                 className="form-control w-50" 
                                 onChange={handleImageChange} 
                                 accept="image/*" 
-                            />
-                        )}
+                              />
+                            )}
                           </Col>
                             
                         </Row>
+
                         <Row className="g-gs mt-50px">
                           <Col md="6">
                             <div className="form-group">
@@ -272,7 +293,7 @@ const ProfileJB = ({ ...props }) => {
                         </Row>
                         <Row md="6">
                          
-                          <Col md="6">
+                          <Col md="4">
                             <div className="form-group">
                               <label className="form-label">Sex</label>
                               <select className="form-control" defaultValue={profile.sex} {...registerForm1('gender')} id="gender">
@@ -283,7 +304,15 @@ const ProfileJB = ({ ...props }) => {
                               </select>
                             </div>
                           </Col>
-                          <Col md="6">
+                          <Col md="4">
+                            <div className="form-group">
+                              <label className="form-label">Birthday</label>
+                              <input type="date" id="birthdate"  {...registerForm1('birthday')} defaultValue={profile.birthdate} className="form-control" />
+                            </div>
+                          </Col>
+
+                          
+                          <Col md="4">
                             <div className="form-group">
                               <label className="form-label">Contact number</label>
                               <input
@@ -300,16 +329,88 @@ const ProfileJB = ({ ...props }) => {
                             </div>
                           </Col>
                           
+                          
                         </Row>
                         <Row className="g-gs">
-                        
-                          <Col md="6">
+                          
+                          <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Birthday</label>
-                              <input type="date" id="birthdate"  {...registerForm1('birthday')} defaultValue={profile.birthdate} className="form-control" />
+                              <label className="form-label">Birth Place</label>
+                              <input type="text" 
+                                id="birth_place"
+                                defaultValue={profile.birth_place}
+                                {...registerForm1('birth_place', { required: true })}
+                                placeholder="Enter your birthplace"
+                                className="form-control" />
+                                {errorsForm1.birth_place && <p className="invalid">This field is required</p>}
+                              </div>
+                          </Col>
+                          <Col md="4"> 
+                            <div className="form-group">
+                              <label className="form-label">Civil Status
+                              
+                              </label>
+                              <select
+                                className="form-control"
+                                id="civil_status"
+                                defaultValue={profile.civil_status}
+                                {...registerForm1('civil_status', { required: true })}
+                              >
+                                <option value="" disabled selected>
+                                  Select your civil status
+                                </option>
+                                <option value="single">Single</option>
+                                <option value="in a relationship">In a relationship</option>
+                                <option value="married">Married</option>
+                                <option value="separated">Separated</option>
+                                <option value="divorced">Divorced</option>
+                                <option value="widowed">Widowed</option>
+                              </select>
+                              {errorsForm1.civil_status && <p className="invalid">This field is required</p>}
                             </div>
                           </Col>
-                          <Col md="6">
+                          <Col md="4">
+                            <div className="form-group">
+                              <label className="form-label">
+                                Citizenship
+                                
+                              </label>
+                              <select
+                                id="citizenship"
+                                defaultValue={profile.citizenship}
+                                {...registerForm1('citizenship', { required: true })}
+                                className="form-control"
+                              >
+                                <option value="" disabled selected>
+                                  Select your citizenship
+                                </option>
+                                <option value="American">American</option>
+                                <option value="Canadian">Canadian</option>
+                                <option value="British">British</option>
+                                <option value="Australian">Australian</option>
+                                <option value="Indian">Indian</option>
+                                <option value="Filipino">Filipino</option>
+                                <option value="German">German</option>
+                                <option value="French">French</option>
+                                <option value="Italian">Italian</option>
+                                <option value="Japanese">Japanese</option>
+                                <option value="Chinese">Chinese</option>
+                                <option value="Mexican">Mexican</option>
+                                <option value="Brazilian">Brazilian</option>
+                                <option value="South African">South African</option>
+                                <option value="South Korean">South Korean</option>
+                                <option value="Russian">Russian</option>
+                                <option value="Spanish">Spanish</option>
+                                <option value="Swedish">Swedish</option>
+                                
+                              </select>
+                              {errorsForm1.citizenship && <p className="invalid">This field is required</p>}
+                            </div>
+                          </Col>
+                        </Row>
+                        <Row>
+
+                          <Col md="4">
                             <div className="form-group">
                               <label className="form-label">Email</label>
                               <input type="text" 
@@ -320,9 +421,7 @@ const ProfileJB = ({ ...props }) => {
                                 {errorsForm1.email && <p className="invalid">This field is required</p>}
                               </div>
                           </Col>
-                        </Row>
-                        <Row className="g-gs">
-                          <Col md="6"> 
+                          <Col md="4"> 
                             <div className="form-group">
                               <label className="form-label">Job Category</label>
                               <select className="form-control" {...registerForm1('category')} defaultValue={profile.category_id}>
@@ -351,139 +450,312 @@ const ProfileJB = ({ ...props }) => {
                               </select>
                             </div>
                           </Col>
-
-                          {/* <Col md="6">
+                          <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Nationality</label>
-                              <input type="text" 
-                                id="nationality"
-                                defaultValue={profile.nationality}
-                                {...registerForm1('nationality', { required: true })}
+                              <label className="form-label">Pag-Ibig No.
+                              <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                              </label>
+                              <input type="number"
+                                id="pagibig"
+                                placeholder="Enter your Pag-Ibig no."
+                                defaultValue={profile.pagibig}
+                                {...registerForm1('pagibig', { required: false })}
                                 className="form-control" />
-                                {errorsForm1.nationality && <p className="invalid">This field is required</p>}
-                              </div>
-                          </Col> */}
-
+                              {errorsForm1.pagibig && <p className="invalid">This field is required</p>}
+                            </div>
+                          </Col>
                         </Row>
+                        <Row className="g-gs">
+                        <Col md="4">
+                              <div className="form-group">
+                                <label className="form-label">SSS No.
+                                <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                                </label>
+                                <input type="number"
+                                  id="sss"
+                                  placeholder="Enter your SSS no."
+                                  defaultValue={profile.sss}
+                                  {...registerForm1('sss', { required: false })}
+                                  className="form-control" />
+                                {errorsForm1.sss && <p className="invalid">This field is required</p>}
+                              </div>
+                            </Col>
+                            <Col md="4">
+                              <div className="form-group">
+                                <label className="form-label">Philhealth No.
+                                <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                                </label>
+                                <input type="number"
+                                  id="philhealth"
+                                  placeholder="Enter your Philhealth no."
+                                  defaultValue={profile.philhealth}
+                                  {...registerForm1('philhealth', { required: false })}
+                                  className="form-control" />
+                                {errorsForm1.philhealth && <p className="invalid">This field is required</p>}
+                              </div>
+                            </Col>
+                            <Col md="4">
+                              <div className="form-group">
+                                <label className="form-label">Tin No.
+                                <span className="text-muted" style={{ fontSize: '10px'}}> (Optional)</span>
+                                </label>
+                                <input type="number"
+                                  id="tin"
+                                  placeholder="Enter your Tin no."
+                                  defaultValue={profile.tin}
+                                  {...registerForm1('tin', { required: false })}
+                                  className="form-control" />
+                                {errorsForm1.tin && <p className="invalid">This field is required</p>}
+                              </div>
+                            </Col>
+                        </Row>     
+
+                       
                         <Row className="g-gs">
                           <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Address No.</label>
-                                <input
-                                  type="text"
-                                  id="address"
-                                  defaultValue={profile.address}
-                                  {...registerForm1('address', { required: true })}
-                                  placeholder="Enter your address no."
-                                  className="form-control-lg form-control" />
-                                {errorsForm1.address && <p className="invalid">This field is required</p>}
-                              </div>
+                              <label className="form-label">Address No. </label>
+                              <input type="text"
+                                id="address"
+                                placeholder="Enter your address no."
+                                defaultValue={profile.address}
+                                {...registerForm1('address', { required: true })}
+                                className="form-control" />
+                              {errorsForm1.address && <p className="invalid">This field is required</p>}
+                            </div>
                           </Col>
                           <Col md="4">
                             <div className="form-group">
                               <label className="form-label">Street</label>
+                          
                                 <input
                                   type="text"
                                   id="street"
                                   defaultValue={profile.street}
                                   {...registerForm1('street', { required: true })}
                                   placeholder="Enter your street"
-                                  className="form-control-lg form-control" />
+                                  className="form-control" />
                                 {errorsForm1.street && <p className="invalid">This field is required</p>}
                               </div>
                           </Col>
                           <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Barangay</label>
+                              <label className="form-label">Barangay
+                              
+                              </label>
                               <input
                                 type="text"
                                 id="barangay"
+                                defaultValue={profile.barangay}
                                 {...registerForm1('barangay', { required: true })}
                                 placeholder="Enter your barangay"
-                                  defaultValue={profile.barangay}
-                                  className="form-control-lg form-control" />
+                                className="form-control" />
                               {errorsForm1.barangay && <p className="invalid">This field is required</p>}                  
                             </div>
-                          </Col>
+                          </Col>  
                         </Row>
-                        <Row className="g-gs">
+                        <Row>
                           <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">City</label>
+                              <label className="form-label">City
+                            
+                              </label>
                               <input
                                 type="text"
                                 id="city"
+                                defaultValue={profile.city}
                                 {...registerForm1('city', { required: true })}
                                 placeholder="Enter your city"
-                                  defaultValue={profile.city}
-                                  className="form-control-lg form-control" />
-                              {errorsForm1.city && <p className="invalid">This field is required</p>}                  
+                                className="form-control" />
+                              {errorsForm1.city && <p className="invalid">This field is required</p>}
                             </div>
                           </Col>
                           <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Province</label>   
+                              <label className="form-label">Province
+                          
+                              </label>
                               <input
                                 type="text"
                                 id="province"
                                 defaultValue={profile.province}
                                 {...registerForm1('province', { required: true })}
                                 placeholder="Enter your province"
-                                className="form-control-lg form-control" />
+                                className="form-control" />
                               {errorsForm1.province && <p className="invalid">This field is required</p>}
                             </div>
                           </Col>
                           <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Region</label>
-                              <input
-                                type="text"
-                                id="region"
-                                {...registerForm1('region', { required: true })}
-                                defaultValue={profile.region}
-                                placeholder="Enter your region"
-                                className="form-control-lg form-control" />
-                              {errorsForm1.region && <p className="invalid">This field is required</p>}
-                            </div>
+                              <label className="form-label">Region
+                            
+                              </label>
+                              <select
+                              className="form-control"
+                              id="region"
+                              defaultValue={profile.region}
+                              {...registerForm1('region', { required: true })}
+                            >
+                              <option value="" disabled selected>
+                                Select your region
+                              </option>
+                              <option value="Region I">Region I</option>
+                              <option value="Region II">Region II</option>
+                              <option value="Region III">Region III</option>
+                              <option value="Region IV">Region IV</option>
+                              <option value="MIMAROPA Region">MIMAROPA Region</option>
+                              <option value="Region V">Region V</option>
+                              <option value="Region VI">Region VI</option>
+                              <option value="Region VII">Region VII</option>
+                              <option value="Region VIII">Region VIII</option>
+                              <option value="Region IX">Region IX</option>
+                              <option value="Region X">Region X</option>
+                              <option value="Region XI">Region XI</option>
+                              <option value="Region XII">Region XII</option>
+                              <option value="Region XIII">Region XIII</option>
+                              <option value="NCR">NCR</option>
+                              <option value="CAR">CAR</option>
+                              <option value="BARMM">BARMM</option>
+                            </select>
+                            {errorsForm1.region && <p className="invalid">This field is required</p>}
+                          </div>
                           </Col>
                         </Row>
+
+                        
                         <Row className="g-gs">
                           <Col md="4">
                             <div className="form-group">
-                              <label className="form-label">Country</label>
-                              <input
-                                type="text"
+                              <label className="form-label">Country </label>
+                              <select
                                 id="country"
-                                {...registerForm1('country', { required: true })}
                                 defaultValue={profile.country}
-                                placeholder="Enter your country"
-                                className="form-control-lg form-control" />
+                                {...registerForm1('country', { required: true })}
+                                className="form-control"
+                              >
+                                <option value="" disabled selected>
+                                  Select your country
+                                </option>
+                                <option value="United States">United States</option>
+                                <option value="Canada">Canada</option>
+                                <option value="United Kingdom">United Kingdom</option>
+                                <option value="Australia">Australia</option>
+                                <option value="India">India</option>
+                                <option value="Germany">Germany</option>
+                                <option value="France">France</option>
+                                <option value="Brazil">Brazil</option>
+                                <option value="China">China</option>
+                                <option value="Japan">Japan</option>
+                                <option value="South Korea">South Korea</option>
+                                <option value="Mexico">Mexico</option>
+                                <option value="Russia">Russia</option>
+                                <option value="South Africa">South Africa</option>
+                                <option value="Italy">Italy</option>
+                                <option value="Netherlands">Netherlands</option>
+                                <option value="Spain">Spain</option>
+                                <option value="Sweden">Sweden</option>
+                                <option value="Philippines">Philippines</option>
+                                <option value="Singapore">Singapore</option>
+                                <option value="Argentina">Argentina</option>
+                                <option value="Belgium">Belgium</option>
+                                <option value="Chile">Chile</option>
+                                <option value="Denmark">Denmark</option>
+                                <option value="Egypt">Egypt</option>
+                                <option value="Finland">Finland</option>
+                                <option value="Greece">Greece</option>
+                                <option value="Hong Kong">Hong Kong</option>
+                                <option value="Indonesia">Indonesia</option>
+                                <option value="Ireland">Ireland</option>
+                                <option value="Malaysia">Malaysia</option>
+                                <option value="New Zealand">New Zealand</option>
+                                <option value="Norway">Norway</option>
+                                <option value="Poland">Poland</option>
+                                <option value="Portugal">Portugal</option>
+                                <option value="Saudi Arabia">Saudi Arabia</option>
+                                <option value="Switzerland">Switzerland</option>
+                                <option value="Thailand">Thailand</option>
+                                <option value="Turkey">Turkey</option>
+                                <option value="United Arab Emirates">United Arab Emirates</option>
+
+                                {/* Add more countries as needed */}
+                              </select>
                               {errorsForm1.country && <p className="invalid">This field is required</p>}
                             </div>
                           </Col>
+
                           <Col md="4">
-                          <div className="form-group">
-                              <label className="form-label">Zip code</label>
-                            <input
-                              type="text"
-                              id="zipcode"
-                              defaultValue={profile.zipcode}
-                              {...registerForm1('zipcode', { required: true })}
-                              placeholder="Enter your zipcode"
-                              className="form-control-lg form-control" />
-                            {errorsForm1.zipcode && <p className="invalid">This field is required</p>}
+                            <div className="form-group">
+                              <label className="form-label">Zip code
+                            
+                              </label>
+                              <input
+                                type="number"
+                                id="zipcode"
+                                defaultValue={profile.zipcode}
+                                {...registerForm1('zipcode', { required: true })}
+                                placeholder="Enter your zipcode"
+                                className="form-control" />
+                              {errorsForm1.zipcode && <p className="invalid">This field is required</p>}
+                            </div>
+                          </Col>
+
+                          <Col md="4">
+                            <div className="form-group">
+                              <label className="form-label">
+                                Educational Attainment
+                              </label>
+                              <select
+                                id="educational_attainment"
+                                defaultValue={profile.educational_attainment}
+                                {...registerForm1('educational_attainment', { required: true })}
+                                className="form-control"
+                              >
+                                <option value="" disabled selected>
+                                  Select your educational attainment
+                                </option>
+                                <option value="College Graduate">College Graduate</option>
+                                <option value="College Level">College Level</option>
+                                <option value="High School Graduate">High School Graduate</option>
+                                <option value="High School Level">High School Level</option>
+                              </select>
+                              {errorsForm1.educational_attainment && <p className="invalid">This field is required</p>}
+                            </div>  
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col md="8">
+                            <div className="form-group">
+                              <label className="form-label">Experience</label>
+                              <input
+                                type="text"
+                                id="experience"
+                                defaultValue={profile.experience}
+                                {...registerForm1('experience', { required: true })}
+                                placeholder="Enter your work experience"
+                                className="form-control" />
+                              {errorsForm1.experience && <p className="invalid">This field is required</p>}
+                            </div>
+                          </Col>
+                          <Col md="4">
+                            <div className="form-group">
+                              <label className="form-label">Experience Years
+
+                              </label>
+                              <input
+                                type="text"
+                                id="experience_years"
+                                defaultValue={profile.experience_years}
+                                {...registerForm1('experience_years', { required: true })}
+                                placeholder="ex. 2021 - 2022"
+                                className="form-control" />
+                              {errorsForm1.experience_years && <p className="invalid">This field is required</p>}
                             </div>
                           </Col>
                         </Row>
-
-
-
-      
-                          
-                        
+                        <br></br>
                         <Row className="gy-4">
                           <Col size="6">
-                              <div className="form-group mt-2">
+                              <div className="form-group">
                                 <Button type="submit" color="primary" size="sm" >
                                     {loading ? <Spinner size="sm" color="light" /> : "Update"}
                                 </Button>
@@ -492,20 +764,6 @@ const ProfileJB = ({ ...props }) => {
                         </Row>
                       </form>
                       <br></br>
-                      {success && (
-                        <div className="mb-3">
-                            <Alert color="success" className="alert-icon">
-                                <Icon name="alert-circle" /> {success}
-                            </Alert>
-                        </div>
-                    )}
-                    {errorVal1 && (
-                        <div className="mb-3">
-                            <Alert color="danger" className="alert-icon">
-                                <Icon name="alert-circle" /> {errorVal1}
-                            </Alert>
-                        </div>
-                    )}
                     </CardBody> 
                 </Card>
             </Col>
@@ -519,21 +777,7 @@ const ProfileJB = ({ ...props }) => {
                       <CardBody className="card-inner">
                           <h5 className="mb-3">Change Password</h5>
 
-                          {successPass && (
-                          <div className="mb-3">
-                            <Alert color="success" className="alert-icon">
-                              <Icon name="alert-circle" /> {successPass}
-                            </Alert>
-                          </div>
-                        )}
-                          {errorVal2 && (
-                              <div className="mb-3">
-                                  <Alert color="danger" className="alert-icon">
-                                      <Icon name="alert-circle" />
-                                      {errorVal2}
-                                  </Alert>
-                              </div>
-                          )}
+                          
 
                           <form onSubmit={handleSubmitForm2(handlePasswordChange)}>
                             <div className="form-group">
