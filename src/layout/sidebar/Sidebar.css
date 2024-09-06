@@ -3,6 +3,7 @@
 .logo-container {
     text-align: center;
     margin-bottom: 10px;
+    background-color: "";
   }
   
   /* Logo size when sidebar is compact */
@@ -32,6 +33,22 @@
   .logo {
     transition: width 0.3s ease;
   }
+
+  .nk-sidebar-head {
+    background-color: "";
+  }
+ 
+
+  .nk-sidebar {
+    background-color: ""; /* Replace with your desired color */
+    /* other styles */
+  }
+
+  .nk-sidebar-content {
+    background-color: ""; /* Optional: Background color for the content area */
+  }
+
+
   
 
   

@@ -4,10 +4,23 @@ import Head from "../../layout/head/Head";
 import {
   Block,
   Row,
-  Col,
   PreviewAltCard,
   TooltipComponent,
 } from "../../components/Component";
+import {
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Col,
+  Card,
+  CardText,
+  CardBody,
+  CardTitle,
+  CardSubtitle,
+  CardLink,
+} from "reactstrap";
 import Icon from "../../components/icon/Icon";
 import axios from "axios";
 import { BASE_URL } from "../axios/auth";
@@ -229,106 +242,101 @@ const Dashboard = ({ ...props }) => {
         <Block>
           <Row className="g-gs">
             <Col md="3" >
-              <PreviewAltCard className="card-full p-2" >
-             
-                <div className="card-title-group align-start mb-0" >
+              <Card className="card-full p-2" style={{ border: '2px solid #ccc', borderLeft: '5px solid #085488', backgroundColor: '#e6f2ff' }}>
+                <div className="card-title-group align-start mb-0" style={{margin: '10px'}}>
                   <div className="card-title">
-                    <h6 className="subtitle">No. of Job Seekers</h6>
+                    <h6 className="amount" style={{ fontSize: "19px" }}>Total of Job Seekers</h6>
                   </div>
                   <div className="card-tools" >
                     <TooltipComponent
                       iconClass="card-hint"
-                      
                       direction="left"
                       id="invest-deposit"
-                      text="No. of Job Seekers"
-                      
+                      text="No. of Job Seekers" 
                     />
                   </div>
                 </div>
             
-                <div className="card-amount" >
-                  <span className="amount" style={{ fontSize: "50px" }}>
+                <div className="card-amount" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span className="amount" style={{ fontSize: "50px", display: 'flex', alignItems: 'center' }}>
                     {jobSeekerCount}
                     <Icon name="users" className="mx-2" />
                   </span>
                 </div>
-              </PreviewAltCard>
+              </Card>
             </Col>
 
             <Col md="3">
-              <PreviewAltCard className="card-full p-2" >
-                <div className="card-title-group align-start mb-0">
+              <Card className="card-full p-2" style={{ border: '2px solid #ccc', borderLeft: '5px solid #088e54', backgroundColor: '#edf9f0' }}>
+                <div className="card-title-group align-start mb-0" style={{margin: '10px'}}>
                   <div className="card-title">
-                    <h6 className="subtitle">No. of Jobs</h6>
+                    <h6 className="amount" style={{ fontSize: "19px" }}>Total of Jobs Posted</h6>
                   </div>
+
                   <div className="card-tools">
                     <TooltipComponent
                       iconClass="card-hint"
-                      
                       direction="left"
                       id="invest-deposit"
                       text="No. of Jobs"
                     />
                   </div>
                 </div>
-                <div className="card-amount">
-                  <span className="amount" style={{ fontSize: "50px" }}>
+                <div className="card-amount" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span className="amount" style={{ fontSize: "50px", display: 'flex', alignItems: 'center' }}>
                     {jobCount}
-                    <Icon name="briefcase" className="mx-2" />
+                    <Icon name="briefcase" className="mx-2"/>
                   </span>
                 </div>
-              </PreviewAltCard>
+              </Card>
             </Col>
 
             <Col md="3">
-              <PreviewAltCard className="card-full p-2">
-                <div className="card-title-group align-start mb-0">
+              <Card className="card-full p-2" style={{ border: '2px solid #ccc', borderLeft: '5px solid #f4b400', backgroundColor: '#fff9e6' }}>
+                <div className="card-title-group align-start mb-0" style={{margin: '10px'}}>
                   <div className="card-title">
-                    <h6 className="subtitle">Yearly Users</h6>
+                    <h6 className="amount" style={{ fontSize: "19px" }}>Yearly Users</h6>
                   </div>
                   <div className="card-tools">
                     <TooltipComponent
                       iconClass="card-hint"
-                      
                       direction="left"
                       id="invest-deposit"
                       text="Yearly Users"
                     />
                   </div>
                 </div>
-                <div className="card-amount">
-                  <span className="amount" style={{ fontSize: "50px" }}>
+                <div className="card-amount" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span className="amount" style={{ fontSize: "50px", display: 'flex', alignItems: 'center' }}>
                     {userCount}
                     <Icon name="users" className="mx-2" />
                   </span>
                 </div>
-              </PreviewAltCard>
+              </Card>
             </Col>
 
             <Col md="3">
-              <PreviewAltCard className="card-full p-2">
-                <div className="card-title-group align-start mb-0">
+              <Card className="card-full p-2" style={{ border: '2px solid #ccc', borderLeft: '5px solid #d93025', backgroundColor: '#fef0f0' }}>
+                <div className="card-title-group align-start mb-0" style={{margin: '10px'}}>
                   <div className="card-title">
-                    <h6 className="subtitle">Yearly Jobs</h6>
+                    <h6 className="amount" style={{ fontSize: "19px" }}>Yearly Job Posted</h6>
                   </div>
                   <div className="card-tools">
                     <TooltipComponent
                       iconClass="card-hint"
-                      
                       direction="left"
                       id="invest-deposit"
                       text="Yearly Jobs"
                     />
                   </div>
                 </div>
-                <div className="card-amount">
-                  <span className="amount" style={{ fontSize: "50px" }}>
+                <div className="card-amount" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  <span className="amount" style={{ fontSize: "50px", display: 'flex', alignItems: 'center' }}>
                     {jobYrCount}
                     <Icon name="briefcase" className="mx-2" />
                   </span>
                 </div>
-              </PreviewAltCard>
+              </Card>
             </Col>
           </Row>
 

@@ -29,9 +29,8 @@ import ApiService from '../base/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
-import { useForm } from "react-hook-form";
 
-const Job = ({ ...props }) => {
+const Partnership = ({ ...props }) => {
   // const BASE_URL = "http://skill-sync-api.test/api";
   // const BASE_URL = "127.0.0.1:8000";
   const [viewModal, setViewModal] = useState(false);
@@ -42,11 +41,6 @@ const Job = ({ ...props }) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [errorVal, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  
-
-  // Get today's date in YYYY-MM-DD format
-  const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
     if (errorVal) {
@@ -154,7 +148,7 @@ const Job = ({ ...props }) => {
       job_category: 1,
     });
   };
-
+  
   var columns = [
     {
       name: "Title",
@@ -315,24 +309,9 @@ const Job = ({ ...props }) => {
   };
 
   const handleInputChange = (e) => {
+    // console.log(e.target);
     const { name, value } = e.target;
-  
-    if (name === "slot") {
-      if (value === "") {
-        // Allow empty input
-        setFormData({ ...formData, [name]: "" });
-      } else {
-        // Convert value to a number and check if it's within the range 0-999
-        const numericValue = parseInt(value, 10);
-  
-        // Only update the state if the value is a valid number and within range
-        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 999) {
-          setFormData({ ...formData, [name]: numericValue });
-        }
-      }
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setFormData({ ...formData, [name]: value });
   };
 
 
@@ -397,6 +376,8 @@ const Job = ({ ...props }) => {
   };
 
   
+  let resumeAge = null;
+  
   const handleViewResume = (id) => {
     setViewModal(false);
     setViewResume(true);
@@ -417,7 +398,7 @@ const Job = ({ ...props }) => {
         console.log(response.data);
 
         setResume(response.data);
-        setImagePreview(`http://127.0.0.1:8000/`+ response.data.profile);
+        setImagePreview(`http://127.0.0.1:8000/`+response.data.profile);
 
         
       })
@@ -491,10 +472,9 @@ const Job = ({ ...props }) => {
         console.error('Error fetching jobs', error);
       });
   };
-
   return (
     <>
-      <Head title="Employers" />
+    <Head title="Partnership" />
       <Content page="component">
         <Block size="lg">
           <BlockHead>
@@ -549,7 +529,7 @@ const Job = ({ ...props }) => {
           </BlockHead>
 
           <div className="row">
-            {jobs.length === 0 ? <p>There are no Job posted yet that align to your job category.</p> : ""}
+            {jobs.length === 0 ? <p>There are no jobs.</p> : ""}
             {jobs.map((job) => (
               <Col key={job.id} xs="12" sm="6" md="6" lg="6" xl="6">
                 <Card className="card-bordered" style={{ border: '2px solid #ccc', margin: '10px', borderLeft: '5px solid #088e54' }}>
@@ -646,7 +626,7 @@ const Job = ({ ...props }) => {
       </Content>
 
       {/* View Modal */}
-      <Modal isOpen={viewResumeModal} toggle={() => setViewResume(false)} size="lg">
+      <Modal isOpen={viewResumeModal} toggle={() => setViewResume(false)} size="xl">
         <ModalHeader toggle={() => setViewResume(false)}>Jobseeker Resume</ModalHeader>
           <ModalBody>
             {selectedResume && (
@@ -786,12 +766,23 @@ const Job = ({ ...props }) => {
           </ModalFooter>)}
       </Modal>
       <Modal isOpen={modal} toggle={toggle}>
-        <ModalHeader toggle={toggle}>Create Job</ModalHeader>
+        <ModalHeader
+                toggle={toggle}
+                close={
+                  <button className="close" onClick={toggle} style={{marginLeft: '72%'}}>
+                    <Icon name="cross" />
+                  </button>
+                }
+        >Create Job</ModalHeader>
 
         <ModalBody>
           {/* FORM HERE */}
           <form>
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '6%' }}
+              >(Required)</span>
               <label>Title</label>
               <input
                 type="text"
@@ -799,24 +790,30 @@ const Job = ({ ...props }) => {
                 value={formData.title}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. IT Specialist"
+                placeholder="ex. IT Specialist"
               />
-              {errorVal.title && <p className="invalid">This field is required</p>}
             </div>
-            
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '16%' }}
+              >(Required)</span>
               <label>Description</label>
               <textarea
                 name="description"
                 value={formData.description}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. We are seeking a skilled Marketing Manager to lead our marketing efforts and drive brand growth. In this role, you will develop and implement marketing strategies, manage campaigns, and analyze performance to ensure we meet our business goals."
+                placeholder="ex. We are seeking a skilled Marketing Manager to lead our marketing efforts 
+                and drive brand growth. In this role, you will develop and implement marketing strategies, 
+                manage campaigns, and analyze performance to ensure we meet our business goals."
               ></textarea>
-              {errorVal.description && <p className="invalid">This field is required</p>}
             </div>
-
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '12%' }}
+              >(Required)</span>
               <label>Location</label>
               <input
                 type="text"
@@ -824,12 +821,14 @@ const Job = ({ ...props }) => {
                 value={formData.location}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. Olongapo City, Zambales"
+                placeholder="ex. Olongapo City, Zambales"
               />
-              {errorVal.location && <p className="invalid">This field is required</p>}
             </div>
-
             <div className="form-group">
+              <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}
+              >(Optional)</span>
               <label>Salary Range</label>
               <input
                 type="text"
@@ -837,12 +836,14 @@ const Job = ({ ...props }) => {
                 value={formData.salary || ''}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. 10,000 - 20,000"
+                placeholder="ex. 30,000 - 50,000 "
               />
-              {errorVal.salary && <p className="invalid">This field is required</p>}
             </div>
-
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '6%' }}
+              >(Required)</span>
               <label>Slot</label>
               <input
                 type="number"
@@ -850,14 +851,14 @@ const Job = ({ ...props }) => {
                 value={formData.slot}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. 10"
-                min="0"
-                max="999"
+                placeholder="ex. 10"
               />
-              {errorVal.slot && <p className="invalid">This field is required</p>}
             </div>
-
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '19%' }}
+              >(Required)</span>
               <label>Requirements</label>
               <input
                 type="text"
@@ -865,27 +866,15 @@ const Job = ({ ...props }) => {
                 value={formData.requirements}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. Professionalism and strong work ethic."
+                placeholder="ex. Professionalism and strong work ethic."
               />
-              {errorVal.requirements && <p className="invalid">This field is required</p>}
             </div>
-
             <div className="form-group">
-              <label>Required Soft Skills</label>
-              <input
-                type="text"
-                name="soft_sskill"
-                id="soft_sskill"
-                value={formData.soft_sskill}
-                onChange={handleInputChange}
-                className="form-control"
-                placeholder="e.g. computer literate."
-              />
-              {errorVal.soft_sskill && <p className="invalid">This field is required</p>}
-            </div>
-
-            <div className="form-group">
-              <label htmlFor="due_date">Due Date</label>
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '13%' }}
+              >(Required)</span>
+              <label htmlFor="dueDate">Due Date</label>
               <input
                 type="date"
                 id="due_date"
@@ -893,12 +882,34 @@ const Job = ({ ...props }) => {
                 onChange={handleInputChange}
                 className="form-control"
                 value={formData.due_date}
-                min={today}
               />
-              {errorVal.due_date && <p className="invalid">This field is required</p>}
             </div>
 
+
             <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '19%' }}
+              >(Optional)</span>
+              <label>Soft Skills</label>
+              <input
+                type="text"
+                name="soft_sskill"
+                id="soft_sskill"
+                value={formData.soft_sskill}
+                onChange={handleInputChange}
+                className="form-control"
+                placeholder="ex. computer literate."
+              />
+            </div>
+
+            
+
+            <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '20%' }}
+              >(Required)</span>
               <label>Facebook Link</label>
               <input
                 type="text"
@@ -906,49 +917,64 @@ const Job = ({ ...props }) => {
                 value={formData.facebook}
                 onChange={handleInputChange}
                 className="form-control"
-                placeholder="e.g. https://www.facebook.com/"
+                placeholder="ex. https://www.facebook.com/"
               />
-              {errorVal.facebook && <p className="invalid">This field is required</p>}
             </div>
-
-            <div className="form-group">
-              <label>Job Category</label>
-              <select
-                name="job_category"
-                value={formData.job_category}
+            {/* <div className="form-group">
+              <label>Due date and time</label>
+              <input
+                type="text"
+                name="due"
+                value={formData.slot}
                 onChange={handleInputChange}
                 className="form-control"
+              />
+            </div> */}
+            <div className="form-group">
+            <span
+                className="text-muted"
+                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}
+              >(Required)</span>
+              <label>
+                Job Category
+              </label>
+              <select
+                id="job_category"
+                className="form-control"
+                name="job_category"
+                value={formData.job_category} // Set default value to an empty string
+                onChange={handleInputChange}
               >
-                <option value="1" disabled>Select a Job category</option>
-                <option value="1">Office Work</option>
-                <option value="2">Production</option>
-                <option value="3">Skilled</option>
-                <option value="4">Hospitality</option>
-                <option value="5">BPO</option>
-                <option value="6">Logistic</option>
-                <option value="7">Construction</option>
-                <option value="8">Delivery Service</option>
-                <option value="9">Distributor</option>
-                <option value="10">Government Institute</option>
-                <option value="11">Heavy Equipment</option>
-                <option value="12">IT Solutions</option>
-                <option value="13">Language School</option>
-                <option value="14">Manufacturing</option>
-                <option value="15">Mining</option>
-                <option value="16">Real Estate</option>
-                <option value="17">Retail</option>
-                <option value="18">Seaport</option>
-                <option value="19">Shipyard</option>
-                <option value="20">Trucking</option>
-                <option value="21">Wholesale Trade</option>
+                {/* Map through the list of job categories and render options */}
+                {[
+                  { id: 1, name: 'Office Work' },
+                  { id: 2, name: 'Production' },
+                  { id: 3, name: 'Skilled' },
+                  { id: 4, name: 'Hospitality' },
+                  { id: 5, name: 'BPO' },
+                  { id: 6, name: 'Logistic' },
+                  { id: 7, name: 'Construction' },
+                  { id: 8, name: 'Delivery Service' },
+                  { id: 9, name: 'Distributor' },
+                  { id: 10, name: 'Government Institute' },
+                  { id: 11, name: 'Heavy Equipment' },
+                  { id: 12, name: 'IT Solutions' },
+                  { id: 13, name: 'Language School' },
+                  { id: 14, name: 'Manufacturing' },
+                  { id: 15, name: 'Mining' },
+                  { id: 16, name: 'Real State' },
+                  { id: 17, name: 'Retail' },
+                  { id: 18, name: 'Seaport' },
+                  { id: 19, name: 'Shipyard' },
+                  { id: 20, name: 'Trucking' },
+                  { id: 21, name: 'Wholesale Trade' }
+                ].map(category => (
+                  <option key={category.id} value={category.id}>{category.name}</option>
+                ))}
               </select>
-              {errorVal.job_category && <p className="invalid">This field is required</p>}
             </div>
-
           </form>
         </ModalBody>
-
-
         <ModalFooter className="bg-light">
           <Button color="primary" onClick={handleFormSubmit}>
             Add New Job
@@ -1154,8 +1180,11 @@ const Job = ({ ...props }) => {
           <Button color="danger" onClick={() => setEditModal(false)}>Cancel</Button>
         </ModalFooter>
       </Modal>
+    
+
+
+    
     </>
   );
 };
-
-export default Job;
+export default Partnership;

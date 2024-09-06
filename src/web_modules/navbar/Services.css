@@ -80,7 +80,7 @@
     flex-direction: row;
     justify-content: space-between;
     text-align: left;
-    background: url(back.png) center center / cover no-repeat;
+    background: url(background.png) center center / cover no-repeat;
     background-color:#0cc977;
     text-align: left;
     font-size: 20px;
@@ -98,7 +98,7 @@
   #home .heading{
     font-size: 4.5rem;
     justify-content: left;
-    font-family: 'sans-serif';
+    font-family: 'arial';
     margin: 0;
     font-weight: bolder;
   }

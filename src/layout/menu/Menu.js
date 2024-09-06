@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import menu from "./MenuData";
 import menu2 from "./menuSeeker";
 import Icon from "../../components/icon/Icon";
@@ -13,7 +13,20 @@ const MenuHeading = ({ heading }) => {
   );
 };
 
-const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, badge, ...props }) => {
+const MenuItem = ({
+  icon,
+  link,
+  text,
+  sub,
+  newTab,
+  sidebarToggle,
+  mobileView,
+  badge,
+  isActive,
+  setActiveItem,
+}) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   let currentUrl;
   const toggleActionSidebar = (e) => {
     if (!sub && !newTab && mobileView) {
@@ -55,7 +68,9 @@ const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, ba
   };
 
   useEffect(() => {
-    var element = document.getElementsByClassName("nk-menu-item active current-page");
+    var element = document.getElementsByClassName(
+      "nk-menu-item active current-page"
+    );
     var arrayElement = [...element];
 
     arrayElement.forEach((dom) => {
@@ -76,7 +91,7 @@ const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, ba
     var subMenuItem = subMenu.childNodes;
     var parentSiblings = parent.parentElement.childNodes;
     var parentMenu = parent.closest(".nk-menu-wrap");
-    //For Sub Menu Height
+    // For Sub Menu Height
     var subMenuHeight = menuHeight(subMenuItem);
     // Get parent elements
     const getParents = (el, parentSelector) => {
@@ -139,9 +154,24 @@ const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, ba
     "nk-menu-item": true,
     "has-sub": sub,
     "active current-page": currentUrl === process.env.PUBLIC_URL + link,
+    "hovered": isHovered,
+    "clicked": isActive,
   });
+
   return (
-    <li className={menuItemClass} onClick={(e) => toggleActionSidebar(e)}>
+    <li
+      className={menuItemClass}
+      onClick={(e) => {
+        toggleActionSidebar(e);
+        setActiveItem(link); // Set the clicked item as active
+      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        backgroundColor: isActive ? "#f0f0f0" : isHovered ? "" : "transparent",
+        borderRadius: "15px",
+      }}
+    >
       {newTab ? (
         <Link
           to={`${process.env.PUBLIC_URL + link}`}
@@ -173,14 +203,19 @@ const MenuItem = ({ icon, link, text, sub, newTab, sidebarToggle, mobileView, ba
       )}
       {sub ? (
         <div className="nk-menu-wrap">
-          <MenuSub sub={sub} sidebarToggle={sidebarToggle} mobileView={mobileView} />
+          <MenuSub
+            sub={sub}
+            sidebarToggle={sidebarToggle}
+            mobileView={mobileView}
+            setActiveItem={setActiveItem}
+          />
         </div>
       ) : null}
     </li>
   );
 };
 
-const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props }) => {
+const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, setActiveItem, ...props }) => {
   return (
     <ul className="nk-menu-sub" style={props.style}>
       {sub.map((item) => (
@@ -194,6 +229,8 @@ const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props })
           badge={item.badge}
           sidebarToggle={sidebarToggle}
           mobileView={mobileView}
+          isActive={props.activeItem === item.link} // Check if this item is active
+          setActiveItem={setActiveItem} // Pass the active item setter down
         />
       ))}
     </ul>
@@ -201,61 +238,65 @@ const MenuSub = ({ icon, link, text, sub, sidebarToggle, mobileView, ...props })
 };
 
 const Menu = ({ sidebarToggle, mobileView }) => {
-  if (localStorage.getItem("role") === "Administrator" || localStorage.getItem("role") === "Employer"){
-      return (
-        <ul className="nk-menu">
+  const [activeItem, setActiveItem] = useState(null); // Track the active item
+
+  if (localStorage.getItem("role") === "Administrator" || localStorage.getItem("role") === "Employer") {
+    return (
+      <ul className="nk-menu">
         {menu
-      .filter((item) => {
-        console.log(item);
-        return true;
-      })
-      .map((item) =>
-        item.heading ? (
-          <MenuHeading heading={item.heading} key={item.heading} />
-        ) : (
-          <MenuItem
-            key={item.text}
-            link={item.link}
-            icon={item.icon}
-            text={item.text}
-            sub={item.subMenu}
-            badge={item.badge}
-            sidebarToggle={sidebarToggle}
-            mobileView={mobileView}
-          />
-        )
-      )}
-
-        </ul>
-      );
-    }else{
-      return (
-        <ul className="nk-menu">
+          .filter((item) => {
+            console.log(item);
+            return true;
+          })
+          .map((item) =>
+            item.heading ? (
+              <MenuHeading heading={item.heading} key={item.heading} />
+            ) : (
+              <MenuItem
+                key={item.text}
+                link={item.link}
+                icon={item.icon}
+                text={item.text}
+                sub={item.subMenu}
+                badge={item.badge}
+                sidebarToggle={sidebarToggle}
+                mobileView={mobileView}
+                isActive={activeItem === item.link} // Check if this item is active
+                setActiveItem={setActiveItem} // Pass the active item setter down
+              />
+            )
+          )}
+      </ul>
+    );
+  } else {
+    return (
+      <ul className="nk-menu">
         {menu2
-      .filter((item) => {
-        console.log(item);
-          return true;
-      })
-      .map((item) =>
-        item.heading ? (
-          <MenuHeading heading={item.heading} key={item.heading} />
-        ) : (
-          <MenuItem
-            key={item.text}
-            link={item.link}
-            icon={item.icon}
-            text={item.text}
-            sub={item.subMenu}
-            badge={item.badge}
-            sidebarToggle={sidebarToggle}
-            mobileView={mobileView}
-          />
-        )
-      )}
-
-        </ul>
-      );
-    }
+          .filter((item) => {
+            console.log(item);
+            return true;
+          })
+          .map((item) =>
+            item.heading ? (
+              <MenuHeading heading={item.heading} key={item.heading} />
+            ) : (
+              <MenuItem
+                key={item.text}
+                link={item.link}
+                icon={item.icon}
+                text={item.text}
+                sub={item.subMenu}
+                badge={item.badge}
+                sidebarToggle={sidebarToggle}
+                mobileView={mobileView}
+                isActive={activeItem === item.link} // Check if this item is active
+                setActiveItem={setActiveItem} // Pass the active item setter down
+              />
+            )
+          )}
+      </ul>
+    );
+  }
 };
 
 export default Menu;

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Content from "../../../layout/content/Content";
 import Head from "../../../layout/head/Head";
@@ -13,7 +13,6 @@ import {
   Row,
   Col,
   PreviewAltCard,
-  PreviewCard,
 } from "../../../components/Component";
 import { Link } from "react-router-dom";
 import NewLogo from "./skillsync.png";
@@ -23,95 +22,125 @@ import axios from "axios";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import "./TransListCrypto.css"; 
 import { Card } from "reactstrap";
-import style from "react-syntax-highlighter/dist/esm/styles/hljs/a11y-dark";
-import { FaEllipsisV } from 'react-icons/fa';
+import Swal from 'sweetalert2';
 
 const TransListCrypto = () => {
   const [passState, setPassState] = useState(false);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit, formState: { errors } } = useForm();
-  const [errorVal, setError] = useState('');
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
   const [imagePreview, setImagePreview] = useState(null);
   const user = JSON.parse(localStorage.getItem('user'));
   const profile = JSON.parse(localStorage.getItem('contact'));
-  const [selectedOption, setSelectedOption] = useState('');
 
-  
   const [experiences, setExperiences] = useState([]); // Array of objects { experience: string, years: number }
   const [newExperience, setNewExperience] = useState('');
   const [newYears, setNewYears] = useState('');
   
-
   const [education, setEducation] = useState([]);
-  const [newEducation, setNewEducation] = useState('');
-  const [customEducation, setCustomEducation] = useState('');
-  const [useCustomInput, setUseCustomInput] = useState(false);
-
+  const [errorVal, setError] = useState("");
   const [success, setSuccess] = useState("");
+
+  useEffect(() => {
+    if (errorVal) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal,
+        confirmButtonText: 'OK',
+      }).then(() => setError("")); 
+    }
+  }, [errorVal]);
+
+  useEffect(() => {
+    if (success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: success,
+        confirmButtonText: 'OK',
+      }).then(() => setSuccess("")); 
+    }
+  }, [success]);
 
   const handleFormSubmit = async (formData) => {
     setLoading(true);
-
+  
     const resumeData = new FormData();
     resumeData.append("profile_picture", formData.profile_picture[0]);
-
+  
     Object.keys(formData).forEach((key) => {
       if (key !== "profile_picture") {
         resumeData.append(key, formData[key]);
       }
     });
-
-    resumeData.append("exp1", newExperience);
-    resumeData.append("exp2", experiences);
-    resumeData.append("edu1", newEducation);
-    resumeData.append("edu2", education);
-
+  
+    resumeData.append("exp", experiences);
+    resumeData.append("edu", education);
     resumeData.append("user_id", user.id);
     resumeData.append("contact_id", profile.id);
-
-    const response = await axios.post(BASE_URL + '/submit-resume', resumeData);
-
-    if (response.data === 1) {
-      navigate(`${process.env.PUBLIC_URL}/auth`);
-      setTimeout(() => {
-        setSuccess('Successfully created');
-        setLoading(false);
-      }, 5000);
-    } else {
-      console.log('Response: failed:', 'Provided credentials are not correct');
+  
+    try {
+      const response = await axios.post(BASE_URL + '/submit-resume', resumeData);
+  
+      if (response.data === 1) {
+        navigate(`${process.env.PUBLIC_URL}/auth`);
+        
+        setTimeout(() => {
+          setSuccess('Successfully created');
+          Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Successfully created!',
+            confirmButtonText: 'OK',
+          });
+          setLoading(false);
+        }, 5000);
+      } else {
+        throw new Error('Provided credentials are not correct');
+      }
+    } catch (error) {
+      setError(error.message);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: error.message || 'An error occurred during submission!',
+        confirmButtonText: 'OK',
+      });
+      setLoading(false);
     }
   };
+  
 
   
-  const handleAddEducation = () => {
-    const educationToAdd = useCustomInput ? customEducation : newEducation;
-    if (educationToAdd) {
-      setEducation([...education, educationToAdd]);
-      setNewEducation('');
-      setCustomEducation('');
-      setUseCustomInput(false);
-    }
-  };
-  const handleDeleteEducation = (index) => {
-    const updatedEducation = education.filter((_, i) => i !== index);
-    setEducation(updatedEducation);
-  };
+  // const handleAddEducation = () => {
+  //   const educationToAdd = useCustomInput ? customEducation : newEducation;
+  //   if (educationToAdd) {
+  //     setEducation([...education, educationToAdd]);
+  //     setNewEducation('');
+  //     setCustomEducation('');
+  //     setUseCustomInput(false);
+  //   }
+  // };
+  // const handleDeleteEducation = (index) => {
+  //   const updatedEducation = education.filter((_, i) => i !== index);
+  //   setEducation(updatedEducation);
+  // };
 
-  const handleChangeeducation = (e) => {
-    setNewEducation(e.target.value);
-  };
+  // const handleChangeeducation = (e) => {
+  //   setNewEducation(e.target.value);
+  // };
 
-  const handleChangeCustomEducation = (e) => {
-    setCustomEducation(e.target.value);
-  };
+  // const handleChangeCustomEducation = (e) => {
+  //   setCustomEducation(e.target.value);
+  // };
 
-  const toggleInputMethod = () => {
-    setUseCustomInput(!useCustomInput);
-    setNewEducation('');
-    setCustomEducation('');
-  };
+  // const toggleInputMethod = () => {
+  //   setUseCustomInput(!useCustomInput);
+  //   setNewEducation('');
+  //   setCustomEducation('');
+  // };
   
 
 
@@ -163,9 +192,9 @@ const TransListCrypto = () => {
     }
   };
 
-  const handleSelectChange = (e) => {
-    setSelectedOption(e.target.value);
-  };
+  // const handleSelectChange = (e) => {
+  //   setSelectedOption(e.target.value);
+  // };
 
   const navbarStyle = {
     display: 'flex',

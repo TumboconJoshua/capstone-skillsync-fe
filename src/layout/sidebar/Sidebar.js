@@ -26,13 +26,16 @@ const Sidebar = ({ fixed, className, ...props }) => {
     "is-compact": theme.sidebarCompact,
     
     [`is-light`]: theme.sidebar === "white",
-    [`is-${theme.sidebar}`]: theme.sidebar !== "white" && theme.sidebar !== "light",
+    [`is-${theme.sidebar}`]: theme.sidebar !== "light" && theme.sidebar !== "light",
     [`${className}`]: className,
   });
 
   return (
     <>
-      <div className={classes} style={{ backgroundColor: '' }}>
+      <div
+        className={classes}
+        
+      >
         <div className="logo-container">
           <img
             src={logo}
@@ -53,12 +56,8 @@ const Sidebar = ({ fixed, className, ...props }) => {
           </div>
         </div>
         <div className="nk-sidebar-content" onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-          <SimpleBar className="nk-sidebar-menu">
-            <Menu
-            itemClassName="menu-item"
-            itemStyle={{ color: 'white' }}
-            itemHoverStyle={{ backgroundColor: '#e6e6e6', color: 'black' }}
-            activeItemStyle={{ backgroundColor: 'white', color: 'green' }}/>
+          <SimpleBar>
+            <Menu/>
           </SimpleBar>
         </div>
       </div>
