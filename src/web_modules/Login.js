@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import NewLogo from "../images/skillsync.png";
+import NewLogo from "./skillsync.png";
 import Head from "../layout/head/Head";
 import {
   Block,
@@ -21,14 +20,40 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { Card } from "reactstrap";
 import "../web_modules/navbar/Services.css";
+import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 
 
 const Auth = () => {
   const [loading, setLoading] = useState(false);
   const [passState, setPassState] = useState(false);
   const [errorVal, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
   const navigate = useNavigate();
   const [isClicked, setIsClicked] = useState(false);
+
+  useEffect(() => {
+    if (errorVal) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error!',
+        text: errorVal,
+        confirmButtonText: 'OK',
+      }).then(() => setError("")); 
+    }
+  }, [errorVal]);
+
+  useEffect(() => {
+    if (success) {
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: success,
+        confirmButtonText: 'OK',
+      }).then(() => setSuccess("")); 
+    }
+  }, [success]);
 
   const onFormSubmit = async (formData) => {
     setLoading(true);
@@ -36,7 +61,8 @@ const Auth = () => {
 
     apiService.authenticate(formData.email, formData.password)
         .then(response => {
-          console.log(response);
+            console.log(response);
+
             localStorage.setItem('role', response.data.role);
             localStorage.setItem('accessToken', response.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data.user));
@@ -45,41 +71,43 @@ const Auth = () => {
             localStorage.setItem('Education',  JSON.stringify(response.data.educational_attainment));
             localStorage.setItem('Experience', JSON.stringify(response.data.experience));
             localStorage.setItem('profile', response.data.profile);
-            if (response.data.role != 'Employer') {
-               setTimeout(() => {
-                  window.history.pushState(
-                    `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/general-page"}`,
-                    "auth-login",
-                    `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/general-page"}`
-                  );
-                  window.location.reload();
-              }, 1000);
-            }else{
-               setTimeout(() => {
-                window.history.pushState(
-                    `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/job-dashboard"}`,
-                    "auth-login",
-                    `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/job-dashboard"}`
-                  );
-                  window.location.reload();
-              }, 1000);
-            }
-           
-           
-            console.log(localStorage.getItem('fullname')   );
+
+            // Show Swal notification on successful login
+            Swal.fire({
+                icon: 'success',
+                title: 'Login Successful!',
+                text: 'Welcome, ' + response.data.fullname,
+                confirmButtonText: 'Continue',
+            }).then(() => {
+                if (response.data.role !== 'Employer') {
+                    window.history.pushState(
+                        `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/general-page"}`,
+                        "auth-login",
+                        `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/general-page"}`
+                    );
+                } else {
+                    window.history.pushState(
+                        `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/job-dashboard"}`,
+                        "auth-login",
+                        `${process.env.PUBLIC_URL ? process.env.PUBLIC_URL : "/job-dashboard"}`
+                    );
+                }
+                window.location.reload();
+            });
+
+            setLoading(false);
         })
         .catch(error => {
+            setLoading(false);
             setTimeout(() => {
                 console.log(error.response.data.data);
                 var errors = error.response.data.data;
                 var errorString = errors[0];
                 setError(errorString);
-                setLoading(false);
             }, 1000);
         });
-
-
   };
+
 
   const navbarStyle = {
     display: 'flex',
@@ -114,7 +142,7 @@ const Auth = () => {
               className="logo-dark logo-img logo-img-lg mx-auto"
               src={NewLogo}
               alt="logo-dark"
-              style={{ width: '100px', height: '200px' }} />
+              style={{ width: '70px', height: '200px' }} />
           </Link>
         <div style={{ width: '80px' }} />
       </nav>
@@ -131,13 +159,7 @@ const Auth = () => {
               </BlockDes>
             </BlockContent>
           </BlockHead>
-          {errorVal && (
-            <div className="mb-3">
-              <Alert color="danger" className="alert-icon">
-                <Icon name="alert-circle" /> {errorVal}
-              </Alert>
-            </div>
-          )}
+          
           <Form className="is-alter" onSubmit={handleSubmit(onFormSubmit)}>
             <div className="form-group">
               <div className="form-label-group">

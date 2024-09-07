@@ -15,6 +15,11 @@ const menu2 = [
         text: "Jobs applied",
         link: "/job-applied",
     },
+    {
+        icon: "layers",
+        text: "Partnership",
+        link: "/partnershipuser",
+    },
     
 ];
 

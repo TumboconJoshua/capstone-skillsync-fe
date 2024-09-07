@@ -142,6 +142,10 @@ import Jobseeker from "../webpages/admin/Jobseeker";
 import Auth from "../web_modules/Login";
 import RegisterEmployer from "../web_modules/RegisterEmployer";
 import Job from "../web_modules/main/Job";
+
+import Partnership from "../web_modules/main/Partnership";
+import PartnershipUser from "../web_modules/main/PartnershipUser";
+
 import RegisterJobseeker from "../web_modules/RegisterJobseeker";
 import Profile from "../web_modules/main/Profile";
 import ProfileJB from "../web_modules/main/ProfileJobseeker";
@@ -167,18 +171,23 @@ const Router = () => {
           <Route path="job-dashboard" element={<Dashboard />}></Route>
           <Route path="job-applied" element={<Employer />}></Route>
           <Route path="jobseeker" element={<Jobseeker />}></Route>
-          <Route path="jobs" element={<Job />}></Route> 
+          <Route path="jobs" element={<Job />}></Route>
+
+          <Route path="partnership" element={<Partnership />}></Route>
+          <Route path="partnershipuser" element={<PartnershipUser/>}></Route>
+
           <Route path="my-profile" element={<Profile />}></Route>
           <Route path="my-profile2" element={<ProfileJB />}></Route>
 
           <Route path="general-page" element={<Crypto />}></Route>
 
-          <Route path="analytics" element={<Analytics />}></Route>
+          {/* <Route path="analytics" element={<Analytics />}></Route>
           <Route path="invest" element={<Invest />}></Route>
-          <Route path="_blank" element={<Blank />}></Route>
+          <Route path="_blank" element={<Blank />}></Route> */}
 
           <Route path="project-card" element={<ProjectCardPage />}></Route>
           <Route path="project-list" element={<ProjectListPage />}></Route>
+
 
 
           <Route element={<UserContextProvider />} >

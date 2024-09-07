@@ -1,14 +1,14 @@
 import React, { useState,useEffect  }  from "react";
-import Content from "../layout/content/Content";
-import Head from "../layout/head/Head";
+import Content from "../../layout/content/Content";
+import Head from "../../layout/head/Head";
 import {
-  Block,
-  BlockHead,
-  BlockHeadContent,
-  BlockTitle,
-  BlockBetween
-} from "../components/Component";
-import Icon from "../components/icon/Icon";
+    Block,
+    BlockHead,
+    BlockHeadContent,
+    BlockTitle,
+    BlockBetween
+  } from "../../components/Component";
+import Icon from "../../components/icon/Icon";
 import {
     Button,
     Modal,
@@ -23,16 +23,16 @@ import {
     CardSubtitle,
     CardLink,
   } from "reactstrap";
-import { BASE_URL  } from "../web_modules/axios/auth";
-import ApiService from '../web_modules/base/axios';
+  import { BASE_URL } from "../axios/auth";
+import ApiService from '../base/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 
 
 
-const Job = ({ ...props }) => {
-   //  const// BASE_URL = "http://skillsync/api";
+const PartnershipUser = ({ ...props }) => {
+    // const BASE_URL = "http://skill-sync-api.test/api";
     // const BASE_URL = "127.0.0.1:8000";
     const [viewModal, setViewModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
@@ -375,7 +375,7 @@ if (localStorage.getItem("role") != "Employer") {
 
   return (
     <>
-      <Head title="Employers" />
+      <Head title="PartnershipUser" />
       <Content page="component">
         <Block size="lg">
           <BlockHead>
@@ -556,7 +556,6 @@ if (localStorage.getItem("role") != "Employer") {
                     <tr key={application.id}>
                         <td>{application.name}</td>
                         <td>
-
                             <a href={`http://localhost:8000/api/${application.resume}`} target="_blank" rel="noreferrer">View Resume</a>
                         </td>
                         {/* Add more columns if needed */}
@@ -852,4 +851,4 @@ if (localStorage.getItem("role") != "Employer") {
   );
 };
 
-export default Job;
+export default PartnershipUser;
