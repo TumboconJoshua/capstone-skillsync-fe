@@ -202,7 +202,7 @@ const categoryMap = categories.reduce((map, category) => {
 
                   <br />
 
-                  <a href={`http://127.0.0.1:8000/api/${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
+                  <a href={`https://skillsync.pw${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
 
                 </>
               )}

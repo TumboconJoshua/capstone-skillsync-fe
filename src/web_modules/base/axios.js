@@ -59,7 +59,7 @@ class ApiService {
 
             const response = await axios({
                 method: method,
-                url: `http://127.0.0.1:8000/`+ endpoint,
+                url: `http://localhost:8000`+ endpoint,
                 headers: headers,
                 data: data,
             })

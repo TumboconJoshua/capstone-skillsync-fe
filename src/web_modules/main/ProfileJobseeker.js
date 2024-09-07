@@ -91,7 +91,7 @@ const ProfileJB = ({ ...props }) => {
   }, []); 
 
   const fetchJobs = async () => {
-    setImagePreview(`http://127.0.0.1:8000/` + profile.profile_picture);
+    setImagePreview(`http://localhost:8000` + profile.profile_picture);
     setExperiences(ex || []);
     setEducation(ed || []);
   };
@@ -221,7 +221,7 @@ const ProfileJB = ({ ...props }) => {
             <Col xs="12" sm="12" md="12" lg="12" xl="12">
                 <Card className="card-bordered">
                     <CardBody className="card-inner">
-                      <h5 className="mb-3">Basic Informationss</h5>
+                      <h5 className="mb-3">Basic Informations</h5>
                       <form className="is-alter" onSubmit={handleSubmitForm1(handleFormSubmit)}>
                         <Row className="mt-2">
                           <Col md="6">

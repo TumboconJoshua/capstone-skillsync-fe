@@ -91,7 +91,7 @@ const ProfileJB = ({ ...props }) => {
   }, []); 
 
   const fetchJobs = async () => {
-    setImagePreview(`http://127.0.0.1:8000/` + profile.profile_picture);
+    setImagePreview(`http://localhost:8000` + profile.profile_picture);
     setExperiences(ex || []);
     setEducation(ed || []);
   };
