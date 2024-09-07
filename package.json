@@ -59,6 +59,7 @@
     "recharts": "^2.12.7",
     "sass": "1.56.1",
     "simplebar-react": "^2.4.3",
+    "skill-sync-fe": "file:",
     "slick-carousel": "^1.8.1",
     "styled-components": "^5.3.6",
     "sweetalert2": "11.4.8",
