@@ -2,28 +2,10 @@ import React, { useState, useEffect } from "react";
 import Content from "../../layout/content/Content";
 import Head from "../../layout/head/Head";
 import { useNavigate } from "react-router-dom";
-import {
-  Block,
-  BlockHead,
-  BlockHeadContent,
-  BlockTitle,
-  BlockBetween
+import { Block, BlockHead, BlockHeadContent, BlockTitle, BlockBetween
 } from "../../components/Component";
 import Icon from "../../components/icon/Icon";
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Col,
-  Card,
-  CardText,
-  CardBody,
-  CardTitle,
-  CardSubtitle,
-  CardLink,
-} from "reactstrap";
+import { Button, Modal, ModalHeader, ModalBody, ModalFooter, Col, Card, CardText, CardBody, CardTitle, CardSubtitle, CardLink, } from "reactstrap";
 import { BASE_URL } from "../axios/auth";
 import ApiService from '../base/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
