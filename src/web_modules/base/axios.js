@@ -5,9 +5,6 @@ class ApiService {
         this.baseURL = baseURL;
         this.token = token;
     }
-
-
-
     setToken(token) {
         this.token = token;
     }
@@ -153,6 +150,12 @@ class ApiService {
             throw error;
         }
     }
+
+    async fetchPartnerships() {
+        const endpoint = 'partnerships';
+        return this.makeRequest('GET', endpoint);
+    }
+    
 }
 
 export default ApiService;
