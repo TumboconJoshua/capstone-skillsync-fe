@@ -32,7 +32,7 @@ import Swal from 'sweetalert2';
 
 
 const Job = ({ ...props }) => {
-    // const BASE_URL = "http://skill-sync-api.test/api";
+   //  const// BASE_URL = "http://skillsync/api";
     // const BASE_URL = "127.0.0.1:8000";
     const [viewModal, setViewModal] = useState(false);
     const [selectedJob, setSelectedJob] = useState(null);
@@ -556,6 +556,7 @@ if (localStorage.getItem("role") != "Employer") {
                     <tr key={application.id}>
                         <td>{application.name}</td>
                         <td>
+
                             <a href={`http://localhost:8000/api/${application.resume}`} target="_blank" rel="noreferrer">View Resume</a>
                         </td>
                         {/* Add more columns if needed */}

@@ -269,6 +269,85 @@ const Jobseeker = ({ ...props }) => {
               {selectedJobSeeker ? `${selectedJobSeeker.first_name} ${selectedJobSeeker.last_name}` : 'Job Seeker Details'}
             </ModalHeader>
             <ModalBody>
+
+              {/* Display job seeker details here */}
+              {selectedJobSeeker && (
+                <>
+                  <div>
+                    <style>
+                      {`
+                      table {
+                        width: 100%;
+                        border-collapse: collapse;
+                      }
+                      table, th, td {
+                        border: 1px solid black;
+                      }
+                      th, td {
+                        padding: 8px;
+                        text-align: left;
+                      }
+                      th {
+                        background-color: #f2f2f2;
+                      }
+                    `}
+                    </style>
+                    <table>
+                      <thead>
+                        <tr>
+                          <th>Field</th>
+                          <th>Details</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {/* <tr>
+                      <td>User ID</td>
+                      <td>{selectedJobSeeker.id}</td>
+                    </tr> */}
+                        <tr>
+                          <td>First Name</td>
+                          <td>{selectedJobSeeker.first_name}</td>
+                        </tr>
+                        <tr>
+                          <td>Last Name</td>
+                          <td>{selectedJobSeeker.last_name}</td>
+                        </tr>
+                        {/* <tr>
+                          <td>Middle Name</td>
+                          <td>{selectedJobSeeker.middle_name}</td>
+                        </tr> */}
+                        <tr>
+                          <td>Extension Name</td>
+                          <td>{selectedJobSeeker.extension_name}</td>
+                        </tr>
+                        <tr>
+                          <td>Sex</td>
+                          <td>{selectedJobSeeker.sex}</td>
+                        </tr>
+                        <tr>
+                          <td>Birthdate</td>
+                          <td>{selectedJobSeeker.birthdate}</td>
+                        </tr>
+                        <tr>
+                          <td>Address</td>
+                          <td>{selectedJobSeeker.address}</td>
+                        </tr>
+                        <tr>
+                          <td>Contact Number</td>
+                          <td>{selectedJobSeeker.contact_number}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <br />
+
+                  <a href={`https://skillsync.pw${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
+
+                </>
+              )}
+              {/* Add more details if needed */}
+
                 {selectedJobSeeker && (
                   <>
                     <div>
@@ -314,6 +393,7 @@ const Jobseeker = ({ ...props }) => {
                     <ModalFooter></ModalFooter>        
                   </>
                 )}
+
             </ModalBody>
           </Modal>
       </Content>

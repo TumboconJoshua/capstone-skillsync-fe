@@ -5,9 +5,6 @@ class ApiService {
         this.baseURL = baseURL;
         this.token = token;
     }
-
-
-
     setToken(token) {
         this.token = token;
     }
@@ -59,7 +56,7 @@ class ApiService {
 
             const response = await axios({
                 method: method,
-                url: `http://127.0.0.1:8000/`+ endpoint,
+                url: `http://localhost:8000`+ endpoint,
                 headers: headers,
                 data: data,
             })
@@ -153,6 +150,12 @@ class ApiService {
             throw error;
         }
     }
+
+    async fetchPartnerships() {
+        const endpoint = 'partnerships';
+        return this.makeRequest('GET', endpoint);
+    }
+    
 }
 
 export default ApiService;
