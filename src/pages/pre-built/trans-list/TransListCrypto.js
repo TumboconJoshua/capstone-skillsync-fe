@@ -37,6 +37,12 @@ const TransListCrypto = () => {
   const [experiences, setExperiences] = useState([]); // Array of objects { experience: string, years: number }
   const [newExperience, setNewExperience] = useState('');
   const [newYears, setNewYears] = useState('');
+
+
+  const [startYear, setStartYear] = useState('');
+  const [endYear, setEndYear] = useState('');
+
+  const [errorsVal, setErrors] = useState({ experience: false });
   
   const [education, setEducation] = useState([]);
   const [errorVal, setError] = useState("");
@@ -146,36 +152,57 @@ const TransListCrypto = () => {
 
 
   const handleAddExperience = () => {
-    if (newExperience.trim() !== '' && newYears.trim() !== '') {
-      const years = parseInt(newYears, 10);
-      if (!isNaN(years)) {
-        setExperiences([...experiences, { experience: newExperience, years }]);
+    if (newExperience.trim() !== '' && startYear.trim() !== '' && endYear.trim() !== '') {
+      const start = parseInt(startYear, 10);
+      const end = parseInt(endYear, 10);
+
+      if (!isNaN(start) && !isNaN(end) && start <= end) {
+        setExperiences([...experiences, { experience: newExperience, startYear: start, endYear: end }]);
         setNewExperience('');
-        setNewYears('');
+        setStartYear('');
+        setEndYear('');
+        setErrors({ experience: false });
       } else {
-        console.log("Please enter a valid number for years.");
+        console.log("Please enter valid years with start year less than or equal to end year.");
       }
     } else {
-      console.log("Please enter both experience and years.");
+      setErrors({ experience: true });
+      console.log("Please enter all fields.");
     }
   };
-  
+
   const handleDeleteExperience = (index) => {
     const newExperienceList = experiences.filter((_, i) => i !== index);
     setExperiences(newExperienceList);
   };
-  
+
   const handleExperienceChange = (event) => {
     setNewExperience(event.target.value);
   };
-  
-  const handleYearsChange = (event) => {
+
+  const handleStartYearChange = (event) => {
     const value = event.target.value;
-    // Allow only numbers and limit to 2 digits
-    if (/^\d{0,2}$/.test(value)) {
-      setNewYears(value); // Update state or handle value
+    // Allow only numbers and limit to 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setStartYear(value);
     }
   };
+
+  const handleEndYearChange = (event) => {
+    const value = event.target.value;
+    // Allow only numbers and limit to 4 digits
+    if (/^\d{0,4}$/.test(value)) {
+      setEndYear(value);
+    }
+  };
+  
+  // const handleYearsChange = (event) => {
+  //   const value = event.target.value;
+  //   // Allow only numbers and limit to 2 digits
+  //   if (/^\d{0,2}$/.test(value)) {
+  //     setNewYears(value); // Update state or handle value
+  //   }
+  // };
 
 
 
@@ -264,13 +291,12 @@ const TransListCrypto = () => {
               <h3> Personal Information</h3>
               <Form className="mt-4" onSubmit={handleSubmit(handleFormSubmit)}>
                 <Row className="g-gs">
-                  <Col md="6">
-                    
+                  <Col md="6"> 
                     <label className="form-label">Profile picture</label>
                     <PreviewAltCard>
                       <div className="card-title-group align-start mb-0">
                         <div className="card-title">
-                          <h6 className="subtitle">Upload 1x1</h6>
+                          <h6 className="subtitle">Upload 2x2</h6>
                         </div>
                       </div>
                       <div className="card-amount">
@@ -284,6 +310,7 @@ const TransListCrypto = () => {
                       </div>
                     </PreviewAltCard>
                   </Col>
+
                   <Col md="6">
                     {imagePreview && (
                       <img src={imagePreview} alt="Preview" className="image-preview" />
@@ -332,7 +359,7 @@ const TransListCrypto = () => {
                       {...register('gender', { required: true })}
                       id="gender"
                     >
-                      <option value="" disabled selected>
+                      <option disabled selected>
                           Select your sex
                         </option>
                       <option value="male">Male</option>
@@ -417,7 +444,7 @@ const TransListCrypto = () => {
                         className="form-control"
                         {...register('civil_status', { required: true })}
                       >
-                        <option value="" disabled selected>
+                        <option disabled selected>
                           Select your civil status
                         </option>
                         <option value="single">Single</option>
@@ -441,7 +468,7 @@ const TransListCrypto = () => {
                         {...register('citizenship', { required: true })}
                         className="form-control"
                       >
-                        <option value="" disabled selected>
+                        <option disabled selected>
                           Select your citizenship
                         </option>
                         <option value="American">American</option>
@@ -492,7 +519,7 @@ const TransListCrypto = () => {
                         className="form-control"
                         {...register('category', { required: true })}
                       >
-                        <option value="" disabled selected>
+                        <option disabled selected>
                           Select your job category
                         </option>
                         <option value="1">Office Work</option>
@@ -658,7 +685,7 @@ const TransListCrypto = () => {
                         className="form-control"
                         {...register('region', { required: true })}
                       >
-                        <option value="" disabled selected>
+                        <option disabled selected>
                           Select your region
                         </option>
                         <option value="Region I">Region I</option>
@@ -695,7 +722,7 @@ const TransListCrypto = () => {
                           {...register('country', { required: true })}
                           className="form-control"
                         >
-                          <option value="" disabled selected>
+                          <option disabled selected>
                             Select your country
                           </option>
                           <option value="United States">United States</option>
@@ -770,7 +797,7 @@ const TransListCrypto = () => {
                           {...register('educational_attainment', { required: true })}
                           className="form-control"
                         >
-                          <option value="" disabled selected>
+                          <option disabled selected>
                             Select your educational attainment
                           </option>
                           <option value="College Graduate">College Graduate</option>
@@ -785,31 +812,110 @@ const TransListCrypto = () => {
                   </Row>
                   
                   <Row>
-                    <Col md="8">
-                      <div className="form-group">
-                        <label className="form-label">Experience</label>
-                        <input
-                          type="text"
-                          id="experience"
-                          {...register('experience', { required: true })}
-                          placeholder="Enter your work experience"
-                          className="form-control" />
-                        {errors.experience && <p className="invalid">This field is required</p>}
-                      </div>
-                    </Col>
-                    <Col md="4">
-                      <div className="form-group">
-                        <label className="form-label">Experience Years</label>
-                        <input
-                          type="text"
-                          id="experience_years"
-                          {...register('experience_years', { required: true })}
-                          placeholder="ex. 2021 - 2022"
-                          className="form-control" />
-                        {errors.experience_years && <p className="invalid">This field is required</p>}
-                      </div>
-                    </Col>
-                  </Row>
+                  <div>
+                    <div className="row">
+                      <Col md="6">
+            <div className="form-group">
+              <label className="form-label">Work Experience</label>
+              <input
+                type="text"
+                id="experience"
+                value={newExperience}
+                onChange={handleExperienceChange}
+                placeholder="e.g IT Support Specialist | XYZ Tech Solutions"
+                className={`form-control ${errorsVal.experience ? 'invalid' : ''}`} // Apply 'invalid' class conditionally
+              />
+            </div>
+          </Col>
+          <Col md="2">
+            <div className="form-group">
+              <label className="form-label">Start Year</label>
+              <input
+                type="text"
+                value={startYear}
+                onChange={handleStartYearChange}
+                placeholder="e.g 2021"
+                className="form-control"
+              />
+           
+            </div>
+          </Col>
+          <Col md="2">
+            <div className="form-group">
+              <label className="form-label">End Year</label>
+              <input
+                type="text"
+                value={endYear}
+                onChange={handleEndYearChange}
+                placeholder="e.g 2020"
+                className="form-control"
+              />
+            </div>
+          </Col>
+          <Col md="2" className="d-flex align-items-end">
+            <button onClick={handleAddExperience} className="btn btn-primary w-100">Add</button>
+          </Col>
+          {/* import Icon from "../../../components/icon/Icon";
+          <Button
+                              className="toggle btn-icon d-md-none"
+                              color="primary"
+                              onClick={toggle}
+                            >
+                              <Icon name="plus"></Icon>
+                            </Button>
+                            <Button
+                              className="toggle d-none d-md-inline-flex"
+                              color="primary"
+                              onClick={toggle}
+                            >
+                              <Icon name="plus"></Icon>
+                              <span>Add Job</span>
+                            </Button> */}
+        </div>
+
+        {experiences.length > 0 && experiences.map((experienceItem, index) => (
+          <Row key={index} className="experience-item mb-2">
+            <Col md="6">
+              <div className="form-group">
+                <label className="form-label"></label>
+                <input
+                  type="text"
+                  value={experienceItem.experience}
+                  readOnly
+                  className="form-control"
+                />
+              </div>
+            </Col>
+            <Col md="2">
+              <div className="form-group">
+                <label className="form-label"></label>
+                <input
+                  type="text"
+                  value={experienceItem.startYear}
+                  readOnly
+                  className="form-control"
+                />
+              </div>
+            </Col>
+            <Col md="2">
+              <div className="form-group">
+                <label className="form-label"></label>
+                <input
+                  type="text"
+                  value={experienceItem.endYear}
+                  readOnly
+                  className="form-control"
+                />
+              </div>
+            </Col>
+            <Col md="2" className="d-flex align-items-end">
+              <button onClick={() => handleDeleteExperience(index)} className="btn btn-danger w-100">Delete</button>
+            </Col>
+          </Row>
+        ))}
+      </div>
+    </Row>
+  
 
                   <br></br><br></br>
 

@@ -9,6 +9,8 @@ import {
   BlockTitle,
   BlockBetween
 } from "../../components/Component";
+import { Form, Spinner, Alert } from "reactstrap";
+// import {  NioIconCard } from "../../../components/Component";
 import Icon from "../../components/icon/Icon";
 import {
   Button,
@@ -16,20 +18,36 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Row,
   Col,
   Card,
+  CardHeader,
+  CardFooter,
+  CardImg,
   CardText,
   CardBody,
   CardTitle,
   CardSubtitle,
   CardLink,
+  // Button,
+
+  Nav,
+  NavLink,
+  NavItem,
+  TabContent,
+  TabPane,
+  DropdownItem, UncontrolledDropdown, DropdownMenu, DropdownToggle, Badge
 } from "reactstrap";
+import { DataTableData, dataTableColumns, dataTableColumns2, userData } from "./TableData";
+import axios from 'axios';
 import { BASE_URL } from "../axios/auth";
 import ApiService from '../base/axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 import Swal from 'sweetalert2';
 import { useForm } from "react-hook-form";
+import "./Job.css"
+
 
 const Job = ({ ...props }) => {
   // const BASE_URL = "http://skill-sync-api.test/api";
@@ -42,10 +60,7 @@ const Job = ({ ...props }) => {
   const user = JSON.parse(localStorage.getItem('user'));
   const [errorVal, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  
-
-  // Get today's date in YYYY-MM-DD format
+  const navigate = useNavigate();
   const today = new Date().toISOString().split('T')[0];
 
   useEffect(() => {
@@ -55,10 +70,11 @@ const Job = ({ ...props }) => {
         title: 'Error!',
         text: errorVal,
         confirmButtonText: 'OK',
-      }).then(() => setError(""));
+      }).then(() => setError("")); // Clear error after displaying
     }
   }, [errorVal]);
-
+  
+  // Show success notification with Swal if success changes
   useEffect(() => {
     if (success) {
       Swal.fire({
@@ -66,12 +82,10 @@ const Job = ({ ...props }) => {
         title: 'Success!',
         text: success,
         confirmButtonText: 'OK',
-      }).then(() => setSuccess(""));
+      }).then(() => setSuccess("")); // Clear success message after displaying
     }
   }, [success]);
-
-
-  const navigate = useNavigate();
+  
 
   const handleView = (row) => {
     // Set the selected job data
@@ -86,6 +100,7 @@ const Job = ({ ...props }) => {
 
     setUserCanSubmit(!userApplied);
   };
+  
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
   };
@@ -93,9 +108,11 @@ const Job = ({ ...props }) => {
   const [origJobs, setOrigJobs] = useState([]);
   const [jobs, setJobs] = useState([]); // Set the jobs state to an empty array [
   const [modal, setModal] = useState(false);
+
+  const [softSkills, setSoftSkills] = useState([]);
+
   const token = localStorage.getItem('accessToken');
   const [apiService, setApiService] = useState(new ApiService(BASE_URL, token));
-
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -109,8 +126,6 @@ const Job = ({ ...props }) => {
     soft_sskill: "",
     job_category: 1,
   });
-
-  
 
 
   const handleSubmitResume = () => {
@@ -289,71 +304,121 @@ const Job = ({ ...props }) => {
       },
     ];
   }
+
+
   const handleDelete = (row) => {
     const jobIdToDelete = row.id;
-
+  
+    // Show confirmation prompt before deleting
     Swal.fire({
       title: 'Are you sure?',
-      text: "You won't be able to recover this!",
+      text: 'This action cannot be undone.',
       icon: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes',
       cancelButtonText: 'Cancel',
     }).then((result) => {
       if (result.isConfirmed) {
+        // Proceed with deletion if confirmed
         apiService.deleteJob(jobIdToDelete)
           .then((response) => {
-            fetchJobs();
-            setSuccess("Job has been deleted successfully!"); // Set success message
+            Swal.fire({
+              icon: 'success',
+              title: 'Deleted!',
+              text: 'The job has been deleted successfully.',
+              confirmButtonText: 'OK',
+            });
+            fetchJobs();  // Refresh job list after successful deletion
           })
           .catch((error) => {
+            // Handle errors
             console.error('Error deleting job', error);
-            setError("Failed to delete job. Please try again."); // Set error message
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'There was an error deleting the job. Please try again.',
+              confirmButtonText: 'OK',
+            });
           });
       }
     });
   };
 
+
+  // const handleDelete = (row) => {
+    
+  //   const jobIdToDelete = row.id;
+  //   apiService.deleteJob(jobIdToDelete)
+  //     .then((response) => {
+  //       fetchJobs();
+  //     })
+  //     .catch((error) => {
+  //       // Handle errors
+  //       console.error('Error deleting job', error);
+  //     });
+  // };
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-  
-    if (name === "slot") {
-      if (value === "") {
-        // Allow empty input
-        setFormData({ ...formData, [name]: "" });
-      } else {
-        // Convert value to a number and check if it's within the range 0-999
-        const numericValue = parseInt(value, 10);
-  
-        // Only update the state if the value is a valid number and within range
-        if (!isNaN(numericValue) && numericValue >= 0 && numericValue <= 999) {
-          setFormData({ ...formData, [name]: numericValue });
-        }
-      }
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    // setFormData({ ...formData, [name]: value });
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const addSoftSkill = () => {
+    if (!formData.soft_sskill.trim()) {
+      // setError({ ...errorVal, soft_sskill: false });
+      return;
+    }
+
+    // Add the skill and reset the input field
+    setSoftSkills([...softSkills, formData.soft_sskill]);
+    setFormData({ soft_sskill: '' });
+    // setError({ ...errorVal, soft_sskill: false });
+
+    // Show success notification using Swal
+    Swal.fire({
+      title: 'Success!',
+      text: 'Soft skill added successfully!',
+      icon: 'success',
+      confirmButtonText: 'OK',
+    });
+  };
+
+  const removeSoftSkill = (index) => {
+    const updatedSkills = softSkills.filter((_, i) => i !== index);
+    setSoftSkills(updatedSkills);
+  };
 
   
   
 
   // Call the function
-
   const handleFormSubmit = () => {
-    console.log('Submitting formData:', formData); // Log the form data
-
+    console.log('Submitting formData:', formData); // Debugging log
+  
     apiService.createJob(formData)
       .then((response) => {
-        console.log('Job created successfully', response.data);
-        setModal(false); // Close the modal on success
-        fetchJobs(); // Fetch updated job list
-        setSuccess("Job has been added successfully!"); // Set success message
+        // Job creation success
+        Swal.fire({
+          icon: 'success',
+          title: 'Job Created',
+          text: 'The job has been created successfully!',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          setModal(false);  // Close the modal after success
+          fetchJobs();       // Refresh the job list
+        });
       })
       .catch((error) => {
+        // Error handling
         console.error('Error creating job', error);
-        setError("Failed to add job. Please try again."); // Set error message
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was an issue creating the job. Please try again later.',
+          confirmButtonText: 'OK',
+        });
       });
   };
 
@@ -375,6 +440,7 @@ const Job = ({ ...props }) => {
     soft_sskill: "",
     job_category: 1,
   });
+  
 
   const handleEdit = (row) => {
     // Set the edit form data based on the selected job
@@ -396,6 +462,7 @@ const Job = ({ ...props }) => {
     setEditModal(true);
   };
 
+  let resumeAge = null;
   
   const handleViewResume = (id) => {
     setViewModal(false);
@@ -417,7 +484,7 @@ const Job = ({ ...props }) => {
         console.log(response.data);
 
         setResume(response.data);
-        setImagePreview(`http://127.0.0.1:8000/`+ response.data.profile);
+        setImagePreview(`http://localhost:8000`+response.data.profile);
 
         
       })
@@ -429,16 +496,45 @@ const Job = ({ ...props }) => {
   const handleEditFormSubmit = () => {
     apiService.updateJob(editFormData.id, editFormData)
       .then((response) => {
-        setEditModal(false); // Close the modal on success
-        fetchJobs(); // Refresh the job list
-        setSuccess("Job has been updated successfully!"); // Set success message
+        // Close the edit modal and refresh the job list
+        setEditModal(false);
+        fetchJobs();
+  
+        // Show success notification
+        Swal.fire({
+          icon: 'success',
+          title: 'Updated!',
+          text: 'The job has been updated successfully.',
+          confirmButtonText: 'OK',
+        });
       })
       .catch((error) => {
+        // Handle errors
         console.error('Error editing job', error);
-        setError("Failed to update job. Please try again."); // Set error message
+  
+        // Show error notification
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'There was an issue updating the job. Please try again.',
+          confirmButtonText: 'OK',
+        });
       });
   };
+  
 
+  // const handleEditFormSubmit = () => {
+  //   apiService.updateJob(editFormData.id, editFormData)
+  //     .then((response) => {
+  //       setEditModal(false);
+  //       fetchJobs();
+  //     })
+  //     .catch((error) => {
+  //       console.error('Error editing job', error);
+  //     });
+  // };
+
+  
   const [searchTerm, setSearchTerm] = useState('');
 
   const handleSearch = (e) => {
@@ -648,53 +744,58 @@ const Job = ({ ...props }) => {
       {/* View Modal */}
       <Modal isOpen={viewResumeModal} toggle={() => setViewResume(false)} size="lg">
         <ModalHeader toggle={() => setViewResume(false)}>Jobseeker Resume</ModalHeader>
-          <ModalBody>
-            {selectedResume && (
-              <>
-                <div>
-                  <div style={{textAlign: 'center'}}>
-                    <img 
-                      src={imagePreview} 
-                      alt="Preview" 
-                      className="image-preview" 
-                      style={{ width: '200px', height: '150px', alignContent: 'center' }} 
-                    />
-                    </div>
-                  <br></br>
-                  
-                  <p><strong>Full Name: </strong>{selectedResume.fullname }&nbsp;&nbsp;&nbsp;
-                  <strong>Age: </strong>{selectedResume.age}&nbsp;&nbsp;&nbsp;
-                  <strong>Sex: </strong>{selectedResume.sex}</p>
-                  <p><strong>Contact No: </strong>{selectedResume.contact}&nbsp;&nbsp;&nbsp;
-                  <strong>Email: </strong>{selectedResume.email}</p><p>
-                  <strong>Birthdate: </strong>{selectedResume.birthdate}&nbsp;&nbsp;&nbsp;
-                  <strong>Citizenship: </strong>{selectedResume.citizenship}</p>
-                  <p><strong>Birth Place: </strong>{selectedResume.birth_place}&nbsp;&nbsp;&nbsp;
-                  <strong>Civil Status: </strong>{selectedResume.civil_status}</p>
-                  <p><strong>SSS No: </strong>{selectedResume.sss}&nbsp;&nbsp;&nbsp;
-                  <strong>Pag-Ibig No: </strong>{selectedResume.pagibig}&nbsp;&nbsp;&nbsp;
-                  <strong>Philhealth No: </strong>{selectedResume.philhealth}&nbsp;&nbsp;&nbsp;
-                  <strong>Tin No: </strong>{selectedResume.tin}
-                  </p>
-                  <br></br>
-                  <h6>Address Details</h6>
-                  <p><strong>Address #:</strong> { selectedResume.address}</p>
-                  <p><strong>Street:</strong> { selectedResume.street}</p>
-                  <p><strong>Barangay:</strong> { selectedResume.barangay}</p>
-                  <p><strong>City:</strong> { selectedResume.city}</p>
-                  <p><strong>Province:</strong> { selectedResume.province}</p>
-                  <p><strong>Region:</strong> { selectedResume.region}</p>
-                  <p><strong>Country:</strong> { selectedResume.country}</p>
-                  <p><strong>Zip code:</strong> { selectedResume.zipcode}</p>
-                  <p><strong>Educational Attainment:</strong> { selectedResume.educational_attainment}</p>
-                  <p><strong>Experience:</strong> { selectedResume.experience} <strong>Year:</strong> { selectedResume.experience_years}</p>
-                  {/* <p><strong>Years:</strong> { selectedResume.experience_years}</p> */}
-                  <br></br>
-                </div>
-                <ModalFooter></ModalFooter>        
-              </>
-            )}
-        </ModalBody>
+        <ModalBody>
+  {selectedResume && (
+    <>
+      <div className="resume-container">
+        {/* Image section */}
+        <div className="image-section">
+          <img 
+            src={imagePreview} 
+            alt="Preview" 
+            className="image-preview" 
+          />
+        </div>
+
+        {/* Information section */}
+        <div className="info-section">
+          <p><strong>Full Name:</strong> {selectedResume.fullname}</p>
+          <p><strong>Sex:</strong> {selectedResume.sex}, <strong>Age:</strong> {selectedResume.age}</p>
+          <p><strong>Contact No:</strong> {selectedResume.contact}</p>
+          <p><strong>Email:</strong> {selectedResume.email}</p>
+          <p><strong>Birthdate:</strong> {selectedResume.birthdate}</p>
+          <p><strong>Citizenship:</strong> {selectedResume.citizenship}</p>
+          <p><strong>Birth Place:</strong> {selectedResume.birth_place}</p>
+          <p><strong>Civil Status:</strong> {selectedResume.civil_status}</p>
+          <br />
+          <h6 className="">Government ID's</h6>
+          <p><strong>SSS No:</strong> {selectedResume.sss ? selectedResume.sss : 'N/A'}</p>
+          <p><strong>Pag-Ibig No:</strong> {selectedResume.pagibig ? selectedResume.pagibig : 'N/A'}</p>
+          <p><strong>Philhealth No:</strong> {selectedResume.philhealth ? selectedResume.philhealth : 'N/A'}</p>
+          <p><strong>TIN No:</strong> {selectedResume.tin ? selectedResume.tin : 'N/A'}</p>
+          <br />
+          <h6 className="">Address Details</h6>
+          <p><strong>Address #:</strong> {selectedResume.address}</p>
+          <p><strong>Street:</strong> {selectedResume.street}</p>
+          <p><strong>Barangay:</strong> {selectedResume.barangay}</p>
+          <p><strong>City:</strong> {selectedResume.city}</p>
+          <p><strong>Province:</strong> {selectedResume.province}</p>
+          <p><strong>Region:</strong> {selectedResume.region}</p>
+          <p><strong>Country:</strong> {selectedResume.country}</p>
+          <p><strong>Zip code:</strong> {selectedResume.zipcode}</p>
+
+          <br />
+          <p><strong>Educational Attainment:</strong> {selectedResume.educational_attainment}</p>
+          <p><strong>Experience:</strong> {selectedResume.experience} <strong>Year:</strong> {selectedResume.experience_years}</p>
+        </div>
+      </div>
+
+      <ModalFooter></ModalFooter>
+    </>
+  )}
+</ModalBody>
+
+
       </Modal>
 
       <Modal isOpen={viewModal} toggle={() => setViewModal(false)} size="xl">
@@ -785,11 +886,15 @@ const Job = ({ ...props }) => {
             </table>}
           </ModalFooter>)}
       </Modal>
+
+
+
+
+
+      {/* Add Job Post */}
       <Modal isOpen={modal} toggle={toggle}>
         <ModalHeader toggle={toggle}>Create Job</ModalHeader>
-
         <ModalBody>
-          {/* FORM HERE */}
           <form>
             <div className="form-group">
               <label>Title</label>
@@ -872,16 +977,32 @@ const Job = ({ ...props }) => {
 
             <div className="form-group">
               <label>Required Soft Skills</label>
-              <input
-                type="text"
-                name="soft_sskill"
-                id="soft_sskill"
-                value={formData.soft_sskill}
-                onChange={handleInputChange}
-                className="form-control"
-                placeholder="e.g. computer literate."
-              />
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <input
+                  type="text"
+                  name="soft_sskill"
+                  id="soft_sskill"
+                  value={formData.soft_sskill}
+                  onChange={handleInputChange}
+                  className="form-control"
+                  placeholder="e.g. computer literate."
+                />
+                <Button color="primary" onClick={addSoftSkill} style={{ marginLeft: '10px' }}>
+                  Add
+                </Button>
+              </div>
               {errorVal.soft_sskill && <p className="invalid">This field is required</p>}
+
+              <ul style={{ listStyleType: 'none', padding: 0, marginTop: '5px'}}>
+                {softSkills.map((skill, index) => (
+                  <li key={index} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '5px' }}>
+                    {skill}
+                    <Button color="danger" onClick={() => removeSoftSkill(index)} style={{ marginLeft: '10px' }}>
+                      Delete
+                    </Button>
+                  </li>
+                ))}
+              </ul>
             </div>
 
             <div className="form-group">
@@ -944,28 +1065,29 @@ const Job = ({ ...props }) => {
               </select>
               {errorVal.job_category && <p className="invalid">This field is required</p>}
             </div>
-
           </form>
         </ModalBody>
-
-
         <ModalFooter className="bg-light">
           <Button color="primary" onClick={handleFormSubmit}>
             Add New Job
           </Button>
         </ModalFooter>
       </Modal>
+
+
+
+
+
+
+
+
+
+      {/* Edit Job Post */}
       <Modal isOpen={editModal} toggle={() => setEditModal(false)}>
         <ModalHeader toggle={() => setEditModal(false)}>Edit Job</ModalHeader>
         <ModalBody>
-          {/* Edit form goes here */}
           <form>
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '7%' }}>
-                (Required)
-              </span>
               <label>Title</label>
               <input
                 type="text"
@@ -977,11 +1099,6 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '16%' }}>
-                (Required)
-              </span>
               <label>Description</label>
               <textarea
                 name="description"
@@ -990,21 +1107,8 @@ const Job = ({ ...props }) => {
                 className="form-control"
               ></textarea>
             </div>
-            {/* <div className="form-group">
-                            <label>Available slot</label>
-                            <textarea
-                                name="slot"
-                                value={editFormData.slot}
-                                onChange={(e) => setEditFormData({ ...editFormData, slot: e.target.value })}
-                                className="form-control"
-                            ></textarea>
-                        </div> */}
+            
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '12%' }}>
-                (Required)
-              </span>
               <label>Location</label>
               <input
                 type="text"
@@ -1014,12 +1118,8 @@ const Job = ({ ...props }) => {
                 className="form-control"
               />
             </div>
+
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}>
-                (Optional)
-              </span>
               <label>Salary Range</label>
               <input
                 type="text"
@@ -1029,12 +1129,8 @@ const Job = ({ ...props }) => {
                 className="form-control"
               />
             </div>
+
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '20%' }}>
-                (Required)
-              </span>
               <label>Facebook Link</label>
               <input
                 type="text"
@@ -1044,12 +1140,8 @@ const Job = ({ ...props }) => {
                 className="form-control"
               />
             </div>
+            
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '12%' }}>
-                (Required)
-              </span>
               <label>Soft Skill</label>
               <input
                 type="text"
@@ -1059,12 +1151,8 @@ const Job = ({ ...props }) => {
                 className="form-control"
               />
             </div>
+
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '6%' }}>
-                (Required)
-              </span>
               <label>Slot</label>
               <input
                 type="number"
@@ -1075,11 +1163,6 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '13%' }}>
-                (Required)
-              </span>
               <label>Due date</label>
               <input
                 type="date"
@@ -1090,11 +1173,6 @@ const Job = ({ ...props }) => {
               />
             </div>
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '19%' }}>
-                (Required)
-              </span>
               <label>Requirements</label>
               <input
                 type="text"
@@ -1104,48 +1182,40 @@ const Job = ({ ...props }) => {
                 className="form-control"
               />
             </div>
+
             <div className="form-group">
-            <span
-                className="text-muted"
-                style={{ fontSize: '10px', color: 'red', display: 'block', marginBottom: '-18px', marginLeft: '18%' }}>
-                (Required)
-              </span>
               <label>Job Category</label>
               <select
                 id="job_category"
                 className="form-control"
                 name="job_category"
-                value={editFormData.job_category} // Set default value to an empty string
+                value={editFormData.job_category}
                 onChange={(e) => setEditFormData({ ...editFormData, job_category: e.target.value })}
               >
-                
-                {/* Map through the list of job categories and render options */}
-                {[
-                  { id: 1, name: 'Office Work' },
-                  { id: 2, name: 'Production' },
-                  { id: 3, name: 'Skilled' },
-                  { id: 4, name: 'Hospitality' },
-                  { id: 5, name: 'BPO' },
-                  { id: 6, name: 'Logistic' },
-                  { id: 7, name: 'Construction' },
-                  { id: 8, name: 'Delivery Service' },
-                  { id: 9, name: 'Distributor' },
-                  { id: 10, name: 'Government Institute' },
-                  { id: 11, name: 'Heavy Equipment' },
-                  { id: 12, name: 'IT Solutions' },
-                  { id: 13, name: 'Language School' },
-                  { id: 14, name: 'Manufacturing' },
-                  { id: 15, name: 'Mining' },
-                  { id: 16, name: 'Real State' },
-                  { id: 17, name: 'Retail' },
-                  { id: 18, name: 'Seaport' },
-                  { id: 19, name: 'Shipyard' },
-                  { id: 20, name: 'Trucking' },
-                  { id: 21, name: 'Wholesale Trade' }
-                ].map(category => (
-                  <option key={category.id} value={category.id}>{category.name}</option>
-                ))}
+                <option value="1" disabled>Select a Job category</option>
+                <option value="1">Office Work</option>
+                <option value="2">Production</option>
+                <option value="3">Skilled</option>
+                <option value="4">Hospitality</option>
+                <option value="5">BPO</option>
+                <option value="6">Logistic</option>
+                <option value="7">Construction</option>
+                <option value="8">Delivery Service</option>
+                <option value="9">Distributor</option>
+                <option value="10">Government Institute</option>
+                <option value="11">Heavy Equipment</option>
+                <option value="12">IT Solutions</option>
+                <option value="13">Language School</option>
+                <option value="14">Manufacturing</option>
+                <option value="15">Mining</option>
+                <option value="16">Real Estate</option>
+                <option value="17">Retail</option>
+                <option value="18">Seaport</option>
+                <option value="19">Shipyard</option>
+                <option value="20">Trucking</option>
+                <option value="21">Wholesale Trade</option>
               </select>
+              {errorVal.job_category && <p className="invalid">This field is required</p>}
             </div>
           </form>
         </ModalBody>

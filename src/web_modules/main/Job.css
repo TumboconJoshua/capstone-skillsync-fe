@@ -1,0 +1,55 @@
+/* Base styles */
+.resume-container {
+    display: flex;
+    align-items: flex-start;
+    margin: 0 50px;
+  }
+  
+  .image-section {
+    margin-right: 20px;
+    text-align: left;
+  }
+  
+  .image-preview {
+    width: 300px;
+    height: 300px;
+    border-radius: 5%;
+    object-fit: cover;
+  }
+  
+  /* .info-section {
+    
+  } */
+  
+  /* Media Queries for responsiveness */
+  
+  /* For screens smaller than 768px */
+  @media (max-width: 768px) {
+    .resume-container {
+      flex-direction: column;
+      margin: 20px;
+    }
+  
+    .image-section {
+      margin-right: 0;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+  
+    .image-preview {
+      width: 100%;
+      max-width: 300px;
+      height: auto;
+    }
+  }
+  
+  /* For screens smaller than 480px */
+  @media (max-width: 480px) {
+    .resume-container {
+      margin: 10px;
+    }
+  
+    .info-section {
+      padding: 0 10px;
+    }
+  }

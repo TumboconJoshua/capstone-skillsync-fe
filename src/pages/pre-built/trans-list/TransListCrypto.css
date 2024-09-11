@@ -1,3 +1,9 @@
+.image-preview {
+    width: 2in; /* or use '2cm' for centimeters */
+    height: 2in; /* or use '2cm' for centimeters */
+    object-fit: cover; /* ensures the image fits within the box */
+  }
+
 .form-container {
     margin: 10px auto; /* Auto margins for horizontal centering */
     max-width: 100%;

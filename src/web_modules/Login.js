@@ -177,8 +177,8 @@ const Auth = () => {
                   className="form-control-lg form-control" />
                 {errors.email && <span className="invalid">{errors.email.message}</span>}
               </div>
-            </div>
-            <div className="form-group">
+
+
               <div className="form-label-group">
                 <label className="form-label" htmlFor="password">
                   Password:
@@ -191,11 +191,10 @@ const Auth = () => {
                     ev.preventDefault();
                     setPassState(!passState);
                   }}
-                  className={`form-icon lg form-icon-right passcode-switch ${passState ? "is-hidden" : "is-shown"}`}
+                  
                 >
-                  <Icon name="eye" className="passcode-icon icon-show"></Icon>
-
-                  <Icon name="eye-off" className="passcode-icon icon-hide"></Icon>
+                <Icon name={passState ? "eye" : "eye-off"} className={`form-icon lg form-icon-right passcode-switch ${passState ? "is-hidden" : "is-shown"}`}/>  
+                  
                 </a>
                 <input
                   type={passState ? "text" : "password"}
@@ -213,6 +212,7 @@ const Auth = () => {
               </Button>
             </div>
           </Form>
+          
           <div className="form-note-s2 text-center pt-4">
             {" "}
             Don't have an account?{" "} <br/>
