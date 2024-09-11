@@ -645,7 +645,7 @@ const Job = ({ ...props }) => {
           </BlockHead>
 
           <div className="row">
-            {jobs.length === 0 ? <p>There are no Job posted yet that align to your job category.</p> : ""}
+            {jobs.length === 0 ? <p>There are no Job posted.</p> : ""}
             {jobs.map((job) => (
               <Col key={job.id} xs="12" sm="6" md="6" lg="6" xl="6">
                 <Card className="card-bordered" style={{ border: '2px solid #ccc', margin: '10px', borderLeft: '5px solid #088e54' }}>
