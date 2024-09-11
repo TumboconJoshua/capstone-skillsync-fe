@@ -316,9 +316,6 @@ const Job = ({ ...props }) => {
       setFormData({ ...formData, [name]: value });
     }
   };
-
-
-  
   
 
   // Call the function

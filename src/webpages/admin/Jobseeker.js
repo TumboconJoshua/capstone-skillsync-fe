@@ -21,21 +21,26 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
+
+
+
 const Jobseeker = ({ ...props }) => {
   // State to hold the job seekers data
   const [jobSeekers, setJobSeekers] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedJobSeeker, setSelectedJobSeeker] = useState(null);
+  const [selectedJobSeeker, setSelectedJobSeeker] = useState(null);   
   const [imagePreview, setImagePreview] = useState(null);
+
+
   const [searchTerm, setSearchTerm] = useState("");
 
   // Function to handle opening the modal
   const openModal = (jobSeeker) => {
     setSelectedJobSeeker(jobSeeker);
     setModalOpen(true);
-
+  
     // Fetch additional details of the selected job seeker
-    axios.get(`${BASE_URL}/jobseekers/${jobSeeker.id}`)
+    axios.get(`${BASE_URL}/jobseeker/${jobSeekers.id}`)
       .then((response) => {
         const birthDate = new Date(response.data.birthdate);
         const today = new Date();
@@ -45,16 +50,21 @@ const Jobseeker = ({ ...props }) => {
           age--;
         }
         response.data.age = age;
-
-        console.log(response.data);
-
+  
+        console.log('Job Seeker Details:', response.data);
+  
+        // Verify the image URL
+        const imageUrl = `http://localhost:8000${response.data.profile}`;
+        console.log('Image URL:', imageUrl);
+  
         setSelectedJobSeeker(response.data);
-        setImagePreview(`http://127.0.0.1:8000/${response.data.profile}`);
+        setImagePreview(imageUrl);
       })
       .catch((error) => {
         console.error('Error fetching job seeker details', error);
       });
   };
+  
 
   // Effect hook to fetch job seekers data when the component mounts
   useEffect(() => {
@@ -65,6 +75,7 @@ const Jobseeker = ({ ...props }) => {
   const fetchJobSeekers = async () => {
     try {
       const response = await axios.get(`${BASE_URL}/jobseekers`);
+      
       setJobSeekers(response.data.data);
     } catch (error) {
       console.error('Error fetching job seekers:', error);
@@ -256,9 +267,9 @@ const Jobseeker = ({ ...props }) => {
                     </table>
                   </div>
 
-                  <br />
+                  <br/>
 
-                  <a href={`https://skillsync.pw${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
+                  
 
                 </>
               )}
@@ -269,19 +280,20 @@ const Jobseeker = ({ ...props }) => {
                     <div>
                       <div style={{textAlign: 'center'}}>
                         <img 
-                          src={imagePreview} 
-                          alt="Preview" 
+                          src={selectedJobSeeker.profile_picture} 
+                          alt="Profile Pictures" 
                           className="image-preview" 
                           style={{ width: '200px', height: '150px', alignContent: 'left' }} 
                         />
+                        
                         </div>
                       <br></br>
                       
-                      <p><strong>Full Name: </strong>{selectedJobSeeker.fullname }&nbsp;&nbsp;&nbsp;
+                      <p><strong>Full Name: </strong>{selectedJobSeeker.first_name  }{selectedJobSeeker.middle_name  } {selectedJobSeeker.last_name  }&nbsp;&nbsp;&nbsp;
                       <strong>Age: </strong>{selectedJobSeeker.age}&nbsp;&nbsp;&nbsp;
                       <strong>Sex: </strong>{selectedJobSeeker.sex}</p>
-                      <p><strong>Contact No: </strong>{selectedJobSeeker.contact}&nbsp;&nbsp;&nbsp;
-                      <strong>Email: </strong>{selectedJobSeeker.email}</p><p>
+                      <p><strong>Contact No: </strong>{selectedJobSeeker.contact_number}&nbsp;&nbsp;&nbsp;
+                      <strong>Email: </strong>{selectedJobSeeker.email }</p><p>
                       <strong>Birthdate: </strong>{selectedJobSeeker.birthdate}&nbsp;&nbsp;&nbsp;
                       <strong>Citizenship: </strong>{selectedJobSeeker.citizenship}</p>
                       <p><strong>Birth Place: </strong>{selectedJobSeeker.birth_place}&nbsp;&nbsp;&nbsp;

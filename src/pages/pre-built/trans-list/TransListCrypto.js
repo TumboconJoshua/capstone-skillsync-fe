@@ -42,6 +42,10 @@ const TransListCrypto = () => {
   const [errorVal, setError] = useState("");
   const [success, setSuccess] = useState("");
 
+  const [age, setAge] = useState('');
+
+
+
   useEffect(() => {
     if (errorVal) {
       Swal.fire({
@@ -143,6 +147,20 @@ const TransListCrypto = () => {
   // };
   
 
+  const handleBirthdayChange = (e) => {
+    const birthDate = new Date(e.target.value);
+    const today = new Date();
+    let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+
+    // Adjust age if the birth date hasn't occurred yet this year
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      calculatedAge--;
+    }
+
+    // Set the calculated age
+    setAge(calculatedAge);
+  };
 
 
   const handleAddExperience = () => {
@@ -261,7 +279,7 @@ const TransListCrypto = () => {
           <Card className="card-bordered mb-20px form-container text-start" style={{ border: '1px solid ##088e54', borderLeft: '5px solid #088e54' }}>
           <PreviewAltCard>
             <div className="p-2">
-              <h3> Personal Information</h3>
+              <h3> Personal Informationss</h3>
               <Form className="mt-4" onSubmit={handleSubmit(handleFormSubmit)}>
                 <Row className="g-gs">
                   <Col md="6">
@@ -342,38 +360,49 @@ const TransListCrypto = () => {
                   </div>
                 </Col>
                 <Col md="4">
-                    <div className="form-group">
-                      <label className="form-label">
-                        Birthday
-                        
-                      </label>
-                      <input
-                        type="date"
-                        id="birthday"
-                        max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
-                        {...register('birthday', {
-                          required: true,
-                          validate: (value) => {
-                            const today = new Date();
-                            const birthDate = new Date(value);
-                            const age = today.getFullYear() - birthDate.getFullYear();
-                            const monthDiff = today.getMonth() - birthDate.getMonth();
-                            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-                              return age - 1 >= 18;
-                            }
-                            return age >= 18;
-                          }
-                        })}
-                        className="form-control"
-                      />
-                      {errors.birthday && errors.birthday.type === 'required' && (
-                        <p className="invalid">This field is required</p>
-                      )}
-                      {errors.birthday && errors.birthday.type === 'validate' && (
-                        <p className="invalid">You must be at least 18 years old</p>
-                      )}
-                    </div>
-                  </Col>
+                <div className="form-group">
+                  <label className="form-label">Birthday</label>
+                  <input
+                    type="date"
+                    id="birthday"
+                    max={new Date(new Date().setFullYear(new Date().getFullYear() - 18)).toISOString().split('T')[0]}
+                    {...register('birthday', {
+                      required: true,
+                      validate: (value) => {
+                        const today = new Date();
+                        const birthDate = new Date(value);
+                        const age = today.getFullYear() - birthDate.getFullYear();
+                        const monthDiff = today.getMonth() - birthDate.getMonth();
+                        if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                          return age - 1 >= 18;
+                        }
+                        return age >= 18;
+                      },
+                      onChange: handleBirthdayChange, // Call the function when the value changes
+                    })}
+                    className="form-control"
+                  />
+                  {errors.birthday && errors.birthday.type === 'required' && (
+                    <p className="invalid">This field is required</p>
+                  )}
+                  {errors.birthday && errors.birthday.type === 'validate' && (
+                    <p className="invalid">You must be at least 18 years old</p>
+                  )}
+                </div>
+              </Col>
+              <Col md="4">
+                <div className="form-group">
+                  <label className="form-label">Age</label>
+                  <input
+                    id="age"
+                    placeholder="Enter your age"
+                    {...register('age', { required: true })}
+                    value={age} 
+                    readOnly 
+                    className="form-control"
+                  />
+                </div>
+              </Col>
                   <Col md="4">
                     <div className="form-group">
                       <label className="form-label">Contact number
