@@ -7,7 +7,6 @@ import {
   BlockHeadContent,
   BlockTitle,
   BlockBetween,
-  PreviewCard,
 } from "../../components/Component";
 import axios from 'axios';
 import { BASE_URL } from "../axios/auth";
@@ -20,50 +19,28 @@ import {
   Button
 } from "reactstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
-import ReactDataTable from "react-data-table-component";
+import { faEye, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
+
+
+
 
 const Jobseeker = ({ ...props }) => {
+  // State to hold the job seekers data
   const [jobSeekers, setJobSeekers] = useState([]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [selectedJobSeeker, setSelectedJobSeeker] = useState(null);
+  const [selectedJobSeeker, setSelectedJobSeeker] = useState(null);   
   const [imagePreview, setImagePreview] = useState(null);
+
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth < 768);
 
-  useEffect(() => {
-    fetchJobSeekers();
-    
-    const handleResize = () => {
-      setIsSmallScreen(window.innerWidth < 768);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, []);
-
-  const fetchJobSeekers = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get(`${BASE_URL}/jobseekers`);
-      setJobSeekers(response.data.data);
-    } catch (error) {
-      setError('Failed to fetch job seekers');
-    } finally {
-      setLoading(false);
-    }
-  };
-
+  // Function to handle opening the modal
   const openModal = (jobSeeker) => {
     setSelectedJobSeeker(jobSeeker);
     setModalOpen(true);
-
-    axios.get(`${BASE_URL}/jobseekers/${jobSeeker.id}`)
+  
+    // Fetch additional details of the selected job seeker
+    axios.get(`${BASE_URL}/jobseeker/${jobSeekers.id}`)
       .then((response) => {
         const birthDate = new Date(response.data.birthdate);
         const today = new Date();
@@ -73,13 +50,36 @@ const Jobseeker = ({ ...props }) => {
           age--;
         }
         response.data.age = age;
-
+  
+        console.log('Job Seeker Details:', response.data);
+  
+        // Verify the image URL
+        const imageUrl = `http://localhost:8000${response.data.profile}`;
+        console.log('Image URL:', imageUrl);
+  
         setSelectedJobSeeker(response.data);
-        setImagePreview(`http://localhost:8000`+response.data.profile);
+        setImagePreview(imageUrl);
       })
       .catch((error) => {
         console.error('Error fetching job seeker details', error);
       });
+  };
+  
+
+  // Effect hook to fetch job seekers data when the component mounts
+  useEffect(() => {
+    fetchJobSeekers();
+  }, []);
+
+  // Function to fetch job seekers data from the server
+  const fetchJobSeekers = async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/jobseekers`);
+      
+      setJobSeekers(response.data.data);
+    } catch (error) {
+      console.error('Error fetching job seekers:', error);
+    }
   };
 
   const categories = [
@@ -106,168 +106,95 @@ const Jobseeker = ({ ...props }) => {
     { id: 21, name: 'Wholesale Trade' }
   ];
 
-  const categoryMap = categories.reduce((map, category) => {
-    map[category.id] = category.name;
-    return map;
-  }, {});
-
-  const header = [
-    {
-      name: "Full Name",
-      selector: row => `${row.last_name}, ${row.first_name}`,
-      grow: 2,
-      style: { paddingRight: "24px" },
-      sortable: true,
-    },
-    {
-      name: "Job Category",
-      selector: row => categoryMap[row.category_id] || 'Unknown Category',
-      sortable: true,
-      hide: "md",
-    },
-    {
-      name: "Sex",
-      selector: row => `${row.sex || 'N/A'}`,
-      minWidth: "100px",
-      sortable: true,
-      hide: 480,
-    },
-    {
-      name: "Birthdate",
-      selector: row => `${row.birthdate || 'N/A'}`,
-      minWidth: "140px",
-      sortable: true,
-      hide: 480,
-    },
-    {
-      name: "Citizenship",
-      selector: row => `${row.citizenship || 'N/A'}`,
-      minWidth: "140px",
-      sortable: true,
-      hide: 480,
-    },
-    {
-      name: "Action",
-      cell: (row) => (
-        <Button color="primary" size="sm" onClick={() => openModal(row)}>
-          <FontAwesomeIcon icon={faEye} />
-        </Button>
-      ),
-      sortable: false,
-      hide: "sm",
-    },
-  ];
-
-  const ExpandableRowComponent = ({ data }) => (
-    <ul className="dtr-details p-2 border-bottom ms-1">
-      <li className="d-block d-sm-none">
-        <span className="dtr-title">Job Category: </span>
-        <span className="dtr-data">{categoryMap[data.category_id] || 'Unknown Category'}</span>
-      </li>
-      <li>
-        <span className="d-block d-sm-none">Birthdate: </span>
-        <span className="dtr-data">{data.birthdate || 'N/A'}</span>
-      </li>
-      <li>
-        <span className="d-block d-sm-none">Citizenship: </span>
-        <span className="dtr-data">{data.citizenship || 'N/A'}</span>
-      </li>
-      <li>
-        <span className="dtr-title">Action:</span> 
-        <span className="dtr-data">
-          <Button color="primary" size="sm" onClick={() => openModal(data)}>
-            View
-          </Button>
-        </span>
-      </li>
-    </ul>
-  );
-
   const handleSearch = (e) => {
-    const value = e.target.value;
-    setSearchTerm(value);
+    setSearchTerm(e.target.value);
 
+    // Filter job seekers based on search term
     if (e.target.value === '' || e.target.value === null) {
       fetchJobSeekers();
     } else {
-      const filteredData = jobSeekers.filter((jobSeeker) =>
-        jobSeeker.first_name.toLowerCase().includes(e.target.value.toLowerCase()) ||
-        jobSeeker.last_name.toLowerCase().includes(e.target.value.toLowerCase())
+      const filteredData = jobSeekers.filter((job) =>
+        job.title.toLowerCase().includes(e.target.value.toLowerCase())
       );
       setJobSeekers(filteredData);
     }
   };
 
-  // const handleSearch = (e) => {
-  //   const value = e.target.value;
-  //   setSearchTerm(value);
-
-  //   if (value === '') {
-  //     setApplicants(origApplicants);
-  //   } else {
-  //     const filteredApplicants = origApplicants.filter((job) =>
-  //       job.name.toLowerCase().includes(value.toLowerCase())
-  //     );
-  //     setApplicants(filteredApplicants);
-  //   }
-  // };
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  const categoryMap = categories.reduce((map, category) => {
+    map[category.id] = category.name;
+    return map;
+  }, {});
 
   return (
     <>
-      <Head title="Employers" />
+      <Head title="Job Seekers" />
       <Content page="component">
         <Block size="lg">
-          <BlockHead>
+        <BlockHead>
             <BlockBetween>
               <BlockHeadContent>
-                <BlockTitle>Jobs Applied</BlockTitle>
+                <BlockTitle>Job Seekers Table</BlockTitle>
               </BlockHeadContent>
               <BlockHeadContent>
-                <div className="toggle-expand-content" style={{ display: "block" }}>
-                  <ul className="nk-block-tools g-3">
-                    <li>
-                      <div className="form-control-wrap">
-                        <div className="form-icon form-icon-right">
-                          <Icon name="search" />
+                
+                  
+                  <div className="toggle-expand-content" style={{ display: "block" }}>
+                    <ul className="nk-block-tools g-3">
+                      <li>
+                        <div className="form-control-wrap">
+                          <div className="form-icon form-icon-right">
+                            <Icon name="search"></Icon>
+                          </div>
+                          <input
+                            type="text"
+                            className="form-control"
+                            id="default-04"
+                            placeholder="Quick search by Title"
+                            onChange={handleSearch}
+                          />
                         </div>
-                        <input
-                          type="search"
-                          className="form-control form-control-sm"
-                          placeholder="Search by Jobs Applied"
-                          value={searchTerm}
-                          onChange={handleSearch}
-                        />
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+                      </li>
+                      
+                    </ul>
+                  </div>
+                
               </BlockHeadContent>
             </BlockBetween>
           </BlockHead>
-          <PreviewCard>
-            <ReactDataTable
-              data={jobSeekers}
-              columns={header}
-              pagination
-              className="nk-tb-list"
-              expandableRows={isSmallScreen}
-              expandableRowsComponent={isSmallScreen ? ExpandableRowComponent : null}
-              defaultSortFieldId={0}
-              defaultSortAsc={false}
-              striped={true}
-              highlightOnHover={true}
-              pointerOnHover={true}
-            />
-          </PreviewCard>
-        </Block>
 
+          <div className="table-responsive">
+            <table className="table table-bordered">
+              <thead>
+                <tr>
+                   {/*<th>User ID</th>*/}
+                  <th>Full Name</th>
+                  <th>Job Category</th>
+                  <th>Address</th>
+                  
+                  <th>Action</th>
+                  {/* Add more columns if needed */}
+                </tr>
+              </thead>
+              <tbody>
+                {jobSeekers.map(jobSeeker => (
+                  <tr key={jobSeeker.id}>
+                    {/*<td>{jobSeeker.id}</td>*/}
+                    <td>{jobSeeker.last_name}, {jobSeeker.first_name} {jobSeeker.middle_name} {jobSeeker.extension_name}</td>
+                    <td>{categoryMap[jobSeeker.category_id] || 'Unknown Category'}</td>
+                    <td>{jobSeeker.address} {jobSeeker.street}, {jobSeeker.barangay} {jobSeeker.city} </td>
+                    
+                    <td>
+                      <Button color="primary" onClick={() => openModal(jobSeeker)}><FontAwesomeIcon icon={faEye} /></Button>
+                    </td>
+                    {/* Add more columns if needed */}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          
           <Modal isOpen={modalOpen} toggle={() => setModalOpen(false)} size="lg">
-            <ModalHeader toggle={() => setModalOpen(!modalOpen)}>
-              {selectedJobSeeker ? `${selectedJobSeeker.first_name} ${selectedJobSeeker.last_name}` : 'Job Seeker Details'}
-            </ModalHeader>
+            <ModalHeader toggle={() => setModalOpen(false)}>Job Seeker Details</ModalHeader>
             <ModalBody>
 
               {/* Display job seeker details here */}
@@ -340,9 +267,9 @@ const Jobseeker = ({ ...props }) => {
                     </table>
                   </div>
 
-                  <br />
+                  <br/>
 
-                  <a href={`https://skillsync.pw${selectedJobSeeker.resume}`} target="_blank" rel="noreferrer noopener">View Resume</a>
+                  
 
                 </>
               )}
@@ -353,19 +280,20 @@ const Jobseeker = ({ ...props }) => {
                     <div>
                       <div style={{textAlign: 'center'}}>
                         <img 
-                          src={imagePreview} 
-                          alt="Preview" 
+                          src={selectedJobSeeker.profile_picture} 
+                          alt="Profile Pictures" 
                           className="image-preview" 
                           style={{ width: '200px', height: '150px', alignContent: 'left' }} 
                         />
+                        
                         </div>
                       <br></br>
                       
-                      <p>
+                      <p><strong>Full Name: </strong>{selectedJobSeeker.first_name  }{selectedJobSeeker.middle_name  } {selectedJobSeeker.last_name  }&nbsp;&nbsp;&nbsp;
                       <strong>Age: </strong>{selectedJobSeeker.age}&nbsp;&nbsp;&nbsp;
                       <strong>Sex: </strong>{selectedJobSeeker.sex}</p>
                       <p><strong>Contact No: </strong>{selectedJobSeeker.contact_number}&nbsp;&nbsp;&nbsp;
-                      <strong>Email: </strong>{selectedJobSeeker.email}</p><p>
+                      <strong>Email: </strong>{selectedJobSeeker.email }</p><p>
                       <strong>Birthdate: </strong>{selectedJobSeeker.birthdate}&nbsp;&nbsp;&nbsp;
                       <strong>Citizenship: </strong>{selectedJobSeeker.citizenship}</p>
                       <p><strong>Birth Place: </strong>{selectedJobSeeker.birth_place}&nbsp;&nbsp;&nbsp;
@@ -396,6 +324,7 @@ const Jobseeker = ({ ...props }) => {
 
             </ModalBody>
           </Modal>
+        </Block>
       </Content>
     </>
   );
